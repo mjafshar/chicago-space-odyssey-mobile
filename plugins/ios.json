@@ -4,23 +4,8 @@
         "uninstalled": []
     },
     "config_munge": {
-        "files": {
-            "config.xml": {
-                "parents": {
-                    "/*": [
-                        {
-                            "xml": "<feature name=\"GeLoCordovaPlugin\"><param name=\"ios-package\" value=\"GeLoCordovaPlugin\" /></feature>",
-                            "count": 1
-                        }
-                    ]
-                }
-            }
-        }
+        "files": {}
     },
-    "installed_plugins": {
-        "com.phonegap.plugins.GeLoCordovaPlugin": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
-        }
-    },
+    "installed_plugins": {},
     "dependent_plugins": {}
 }
