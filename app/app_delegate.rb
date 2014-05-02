@@ -31,7 +31,6 @@ class AppDelegate
         #     p "Error #{composer.error.inspect}"
         #   end
         # end
-exit
 
         # timeline = UIButton.buttonWithType(UIButtonTypeRoundedRect)
         # timeline.setTitle("Timeline", forState:UIControlStateNormal)
