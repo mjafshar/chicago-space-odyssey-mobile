@@ -1,5 +1,7 @@
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
+    @ra = ReverseAuth.new
+    @ra.getData
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     @window.makeKeyAndVisible
 
@@ -13,6 +15,73 @@ class AppDelegate
 
     @window.rootViewController = tab_controller
 
+    Twitter.sign_in do |granted, error|
+      p Twitter.accounts.first.user_id
+      if granted
+        compose = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+        compose.setTitle("Compose", forState:UIControlStateNormal)
+        compose.sizeToFit
+        @controller.view.addSubview(compose)
+        compose.when UIControlEventTouchUpInside do
+          account = Twitter.accounts[0]
+          account.compose(tweet: "Hello World!", urls: ["http://clayallsopp.com"]) do |composer|
+            p "Done? #{composer.done?}"
+            p "Cancelled? #{composer.cancelled?}"
+            p "Error #{composer.error.inspect}"
+          end
+        end
+
+        timeline = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+        timeline.setTitle("Timeline", forState:UIControlStateNormal)
+        timeline.setTitle("Loading", forState:UIControlStateDisabled)
+        timeline.sizeToFit
+        timeline.frame = compose.frame.below(10)
+        @controller.view.addSubview(timeline)
+        timeline.when UIControlEventTouchUpInside do
+          timeline.enabled = false
+          account = Twitter.accounts[0]
+          account.get_timeline do |hash, error|
+            timeline.enabled = true
+            p "Timeline #{hash}"
+          end
+        end
+      else
+        label = UILabel.alloc.initWithFrame(CGRectZero)
+        label.text = "Denied :("
+        label.sizeToFit
+        label.center = @controller.view.frame.center
+        @controller.view.addSubview(label)
+      end
+    end
     true
+  end
+end
+
+class ReverseAuth
+
+  def getData
+    url = NSURL.URLWithString "https://api.twitter.com/oauth/request_token"
+    dict = {x_auth_mode: "reverse_auth"}
+    @step1Request = TWSignedRequest.alloc.initWithURL(url, parameters: dict, requestMethod: TWSignedRequestMethodPOST)
+    @step1Request.consumerKey = 'CONSUMER_KEY'
+    @step1Request.consumerSecret = 'CONSUMER_SECRET'
+    Dispatch::Queue.concurrent.async do
+      @step1Request.performRequestWithHandler(->(data, resp, err){
+        Dispatch::Queue.main.async do
+          setData(data)
+        end
+      })
+    end
+  end
+
+  def setData(data)
+    puts data
+  end
+
+end
+
+class Twitter::User
+  def user_id
+    self.ac_account.valueForKeyPath("properties")["user_id"]
   end
 end
