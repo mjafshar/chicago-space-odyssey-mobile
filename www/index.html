@@ -28,14 +28,19 @@
     </head>
     <body>
         <div class="app">
-            <h1>Javad is the best!</h1>
+            <button class="click"></button>
+            <h1 class='title'>Javad is the best!</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
             </div>
         </div>
-        <script type="text/javascript" src="phonegap.js"></script>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.2/jquery.mobile.min.css" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.2/jquery.mobile.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/ajax.js"></script>
         <script type="text/javascript">
             app.initialize();
         </script>
