@@ -15,7 +15,9 @@ class System
   def self.pull_system_data(system_id)
     BW::HTTP.get("http://192.168.0.9:3000/locations/#{system_id}") do |response|
       result_data = BW::JSON.parse(response.body.to_str)
-      @system_data = result_data['system']
+      puts "result_data"
+      @system_data = result_data[:system]
+      puts "Inside: #{@system_data}"
       # if system.id.to_id == -1
       #   block.call(nil)
       # else
@@ -25,6 +27,6 @@ class System
       # p response.body.to_str
       # block.call(nil)
     end
-    @system_data
+    puts "Outside: #{@system_data}"
   end
 end

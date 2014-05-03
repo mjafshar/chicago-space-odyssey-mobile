@@ -1,7 +1,5 @@
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
-    @ra = ReverseAuth.new
-    @ra.getData
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     @window.makeKeyAndVisible
 
