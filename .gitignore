@@ -15,3 +15,5 @@ nbproject
 .sass-cache
 .idea
 .dat*.*
+vendor/twapi/build-iPhoneOS/*.*
+vendor/twapi/build-iPhoneSimulator/*.*
