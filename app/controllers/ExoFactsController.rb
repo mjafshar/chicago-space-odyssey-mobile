@@ -18,12 +18,12 @@ class ExoFactsController < UIViewController
     @add_button.frame = CGRect.new([10, 50], @add_button.frame.size)
     @add_button.addTarget(self, action:"display_lat_long", forControlEvents:UIControlEventTouchUpInside)
     self.view.addSubview(@add_button)
-    # dbc = CLLocationCoordinate2D.new(41.889911, -87.637657)
-    # dbc_region = CLCircularRegion.alloc.initCircularRegionWithCenter(dbc, radius:100, identifier:"Epic")
-    # puts "The dbc region: #{dbc_region.inspect}"
-    general_alert(CLLocationManager.isMonitoringAvailableForClass(CLCircularRegion.class))
-    # @location_manager.startMonitoringForRegion(dbc_region)
+    dbc = CLLocationCoordinate2D.new(41.891926, -87.609223)
+    dbc_region = CLCircularRegion.alloc.initCircularRegionWithCenter(dbc, radius:100, identifier:"Navy Pier")
+    @location_manager.startMonitoringForRegion(dbc_region)
+    @location_manager.requestStateForRegion(dbc_region)
   end
+
 
   def initWithNibName(name, bundle: bundle)
     super
@@ -65,6 +65,14 @@ class ExoFactsController < UIViewController
     alert.addButtonWithTitle("OK") 
     alert.message = error 
     alert.show     
+  end
+
+  def locationManager(manager, didDetermineState: state, forRegion: region)
+    if state == CLRegionStateInside
+      general_alert("inside the region!")
+    else
+      general_alert("outside the region :(")
+    end
   end
 
   def show_error_message(message) 
