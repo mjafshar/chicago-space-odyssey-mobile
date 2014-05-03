@@ -18,6 +18,11 @@ class ExoFactsController < UIViewController
     @add_button.frame = CGRect.new([10, 50], @add_button.frame.size)
     @add_button.addTarget(self, action:"display_lat_long", forControlEvents:UIControlEventTouchUpInside)
     self.view.addSubview(@add_button)
+    # dbc = CLLocationCoordinate2D.new(41.889911, -87.637657)
+    # dbc_region = CLCircularRegion.alloc.initCircularRegionWithCenter(dbc, radius:100, identifier:"Epic")
+    # puts "The dbc region: #{dbc_region.inspect}"
+    general_alert(CLLocationManager.isMonitoringAvailableForClass(CLCircularRegion.class))
+    # @location_manager.startMonitoringForRegion(dbc_region)
   end
 
   def initWithNibName(name, bundle: bundle)
@@ -29,7 +34,7 @@ class ExoFactsController < UIViewController
   def check_location 
    if (CLLocationManager.locationServicesEnabled) 
      @location_manager = CLLocationManager.alloc.init 
-     @location_manager.desiredAccuracy = KCLLocationAccuracyKilometer 
+     @location_manager.desiredAccuracy = KCLLocationAccuracyBest
      @location_manager.delegate = self 
      @location_manager.startUpdatingLocation 
    else 
@@ -40,12 +45,27 @@ class ExoFactsController < UIViewController
   def locationManager(manager, didUpdateToLocation:newLocation, fromLocation:oldLocation) 
    @latitude = newLocation.coordinate.latitude 
    @longitude = newLocation.coordinate.longitude 
-   @location_manager.stopUpdatingLocation    
+   # @location_manager.stopUpdatingLocation    
   end 
  
   def locationManager(manager, didFailWithError:error) 
     show_error_message('Enable the Location Services for this app in Settings.') 
   end 
+
+  def locationManager(manager, didEnterRegion:region)
+    puts "Getting to did enter region"
+    alert = UIAlertView.new 
+    alert.addButtonWithTitle("OK") 
+    alert.message = "You have entered the region! Hooray!" 
+    alert.show     
+  end
+
+  def locationManager(manager, monitoringDidFailForRegion:region, withError:error)
+    alert = UIAlertView.new 
+    alert.addButtonWithTitle("OK") 
+    alert.message = error 
+    alert.show     
+  end
 
   def show_error_message(message) 
     alert = UIAlertView.new 
@@ -59,6 +79,13 @@ class ExoFactsController < UIViewController
     alert.addButtonWithTitle("OK") 
     alert.message = "Lat: #{@latitude}, Long: #{@longitude}"
     alert.show 
+  end
+
+  def general_alert(message)
+    alert = UIAlertView.new 
+    alert.addButtonWithTitle("OK") 
+    alert.message = "#{message}"
+    alert.show  
   end
 
 end
