@@ -5,55 +5,77 @@ class AppDelegate
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     @window.makeKeyAndVisible
 
+    if Twitter::Composer.available? 
+      exo_facts_controller = ExoFactsController.alloc.initWithNibName(nil, bundle: nil)
+      geo_cache_controller = GeoCachingController.alloc.initWithNibName(nil, bundle: nil)
+      visited_sites_controller = VisitedSitesController.alloc.initWithNibName(nil, bundle: nil)
+      adler_controller = AdlerInfoController.alloc.initWithNibName(nil, bundle: nil)
 
-    Twitter.sign_in do |granted, error|
-      p Twitter.accounts.first.user_id
-      if granted
-        exo_facts_controller = ExoFactsController.alloc.initWithNibName(nil, bundle: nil)
-        geo_cache_controller = GeoCachingController.alloc.initWithNibName(nil, bundle: nil)
-        visited_sites_controller = VisitedSitesController.alloc.initWithNibName(nil, bundle: nil)
-        adler_controller = AdlerInfoController.alloc.initWithNibName(nil, bundle: nil)
+      tab_controller = UITabBarController.alloc.initWithNibName(nil, bundle: nil)
+      tab_controller.viewControllers = [exo_facts_controller, geo_cache_controller, visited_sites_controller, adler_controller]
 
-        tab_controller = UITabBarController.alloc.initWithNibName(nil, bundle: nil)
-        tab_controller.viewControllers = [exo_facts_controller, geo_cache_controller, visited_sites_controller, adler_controller]
+      @window.rootViewController = tab_controller
+    else
+      label = UILabel.alloc.initWithFrame(CGRectZero)
+      @window.backgroundColor = UIColor.whiteColor
+      label.text = "Login to Twitter!"
+      label.sizeToFit
+      label.center = CGPointMake(@window.frame.size.width / 2, @window.frame.size.height / 2)
+      @window.addSubview(label)
+    end  
 
-        @window.rootViewController = tab_controller
-        # compose = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-        # compose.setTitle("Compose", forState:UIControlStateNormal)
-        # compose.sizeToFit
-        # puts "Error?"
-        # tab_controller.view.addSubview(compose)
-        # compose.when UIControlEventTouchUpInside do
-        #   account = Twitter.accounts[0]
-        #   account.compose(tweet: "Hello World!", urls: ["http://clayallsopp.com"]) do |composer|
-        #     p "Done? #{composer.done?}"
-        #     p "Cancelled? #{composer.cancelled?}"
-        #     p "Error #{composer.error.inspect}"
-        #   end
-        # end
+    # Twitter.sign_in do |granted, error|
+    #   # p Twitter.accounts.first.user_id
+    #   if granted
+    #     exo_facts_controller = ExoFactsController.alloc.initWithNibName(nil, bundle: nil)
+    #     geo_cache_controller = GeoCachingController.alloc.initWithNibName(nil, bundle: nil)
+    #     visited_sites_controller = VisitedSitesController.alloc.initWithNibName(nil, bundle: nil)
+    #     adler_controller = AdlerInfoController.alloc.initWithNibName(nil, bundle: nil)
 
-        # timeline = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-        # timeline.setTitle("Timeline", forState:UIControlStateNormal)
-        # timeline.setTitle("Loading", forState:UIControlStateDisabled)
-        # timeline.sizeToFit
-        # timeline.frame = compose.frame.below(10)
-        # tab_controller.view.addSubview(timeline)
-        # timeline.when UIControlEventTouchUpInside do
-        #   timeline.enabled = false
-        #   account = Twitter.accounts[0]
-        #   account.get_timeline do |hash, error|
-        #     timeline.enabled = true
-        #     p "Timeline #{hash}"
-        #   end
-        # end
-      else
-        label = UILabel.alloc.initWithFrame(CGRectZero)
-        label.text = "Denied :("
-        label.sizeToFit
-        label.center = tab_controller.view.frame.center
-        tab_controller.view.addSubview(label)
-      end
-    end
+    #     tab_controller = UITabBarController.alloc.initWithNibName(nil, bundle: nil)
+    #     tab_controller.viewControllers = [exo_facts_controller, geo_cache_controller, visited_sites_controller, adler_controller]
+
+    #     @window.rootViewController = tab_controller
+    #     p "we got here instead"
+    #     p Twitter.accounts[0]
+    #     # compose = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+    #     # compose.setTitle("Compose", forState:UIControlStateNormal)
+    #     # compose.sizeToFit
+    #     # puts "Error?"
+    #     # tab_controller.view.addSubview(compose)
+    #     # compose.when UIControlEventTouchUpInside do
+    #     #   account = Twitter.accounts[0]
+    #     #   account.compose(tweet: "Hello World!", urls: ["http://clayallsopp.com"]) do |composer|
+    #     #     p "Done? #{composer.done?}"
+    #     #     p "Cancelled? #{composer.cancelled?}"
+    #     #     p "Error #{composer.error.inspect}"
+    #     #   end
+    #     # end
+
+    #     # timeline = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+    #     # timeline.setTitle("Timeline", forState:UIControlStateNormal)
+    #     # timeline.setTitle("Loading", forState:UIControlStateDisabled)
+    #     # timeline.sizeToFit
+    #     # timeline.frame = compose.frame.below(10)
+    #     # tab_controller.view.addSubview(timeline)
+    #     # timeline.when UIControlEventTouchUpInside do
+    #     #   timeline.enabled = false
+    #     #   account = Twitter.accounts[0]
+    #     #   account.get_timeline do |hash, error|
+    #     #     timeline.enabled = true
+    #     #     p "Timeline #{hash}"
+    #     #   end
+    #     # end
+    #   else
+    #     p "wtf"
+    #     label = UILabel.alloc.initWithFrame(CGRectZero)
+    #     label.text = "Denied :("
+    #     label.sizeToFit
+    #     label.center = self.view.frame.center
+    #     # @window.rootViewController = LoginController.alloc.initWithNibName(nil, bundle: nil)
+    #     # self.view.addSubview(label)
+    #   end
+    # end
     true
   end
 end
