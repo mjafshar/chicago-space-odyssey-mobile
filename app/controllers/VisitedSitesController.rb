@@ -2,18 +2,17 @@ class VisitedSitesController < UIViewController
   def viewDidLoad
     super
     self.view.backgroundColor = UIColor.whiteColor
-    @label = UILabel.alloc.initWithFrame(CGRectZero)
-    self.title = "Visited Sites"
-    @label.text = "Where you've visited"
-    @label.sizeToFit
-    @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
+    self.title = "Visits"
+
     @user = User.new
     user_id = 1
     @user.visited_sites(user_id) do |visits|
       @location_names = visits.values
       @visits = visits
       @table = UITableView.alloc.initWithFrame(self.view.bounds)
+      @table.autoresizingMask = UIViewAutoresizingFlexibleHeight
       self.view.addSubview(@table)
+
       @table.dataSource = self
       @table.delegate = self
     end
@@ -28,11 +27,12 @@ class VisitedSitesController < UIViewController
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
     @reuseIdentifier ||= "CELL_IDENTIFIER"
 
-    cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier) || begin
-      UITableViewCell.alloc.initWithStyle(
+    cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier)
+      cell = UITableViewCell.alloc.initWithStyle(
         UITableViewCellStyleDefault,
         reuseIdentifier:@reuseIdentifier)
-    end
+
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
 
     cell.textLabel.text = @location_names[indexPath.row]
 
