@@ -39,7 +39,7 @@ class GeoCachingController < UIViewController
   end
 
   def send_post_request(payload)
-    BW::HTTP.post("http://192.168.0.49:3000/collections/create", {payload: payload}) do |response|
+    BW::HTTP.post("http://tosche-station.herokuapp.com/collections/create", {payload: payload}) do |response|
     end
   end
 
