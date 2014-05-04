@@ -13,7 +13,7 @@ class User
   end
 
   def visited_sites(user_id, &block)
-    BW::HTTP.get("http://192.168.0.9:3000/users/#{user_id}/locations") do |response|
+    BW::HTTP.get("http://192.168.0.20:3000/users/#{user_id}/locations") do |response|
       visits_data = BW::JSON.parse(response.body.to_str)
       block.call(visits_data)
     end

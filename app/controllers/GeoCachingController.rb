@@ -11,13 +11,12 @@ class GeoCachingController < UIViewController
 
     @picture_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
     @picture_button.setTitle("Take A Pic", forState:UIControlStateNormal)
-    @picture_button.sizeToFit
-    # @picture_button.center = CGPointMake(self.view.frame.size.width / 2, @text_field.center.y + 40)
+    @picture_button.frame = [[100, 100], [100, 50]]
+    @picture_button.center = CGPointMake(self.view.frame.size.width / 2, @label.center.y + 40)
     self.view.addSubview @picture_button
+    @view = self
 
     @picture_button.when(UIControlEventTouchUpInside) do
-      # @picture_button.enabled = false
-
       take_picture
     end
   end
@@ -31,6 +30,16 @@ class GeoCachingController < UIViewController
   def take_picture
     BW::Device.camera.rear.picture(media_types: [:movie, :image]) do |result|
       image_view = UIImageView.alloc.initWithImage(result[:original_image])
+      image = UIImage.UIImagePNGRepresentation(image_view.image)
+      encodedImage = [image].pack('m0')
+      data = {image: encodedImage, text: "Some text"}
+      send_post_request(data)
+
+    end
+  end
+
+  def send_post_request(payload)
+    BW::HTTP.post("http://192.168.0.49:3000/collections/create", {payload: payload}) do |response|
     end
   end
 

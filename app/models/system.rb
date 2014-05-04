@@ -13,7 +13,7 @@ class System
   end
 
   def self.pull_system_data(system_id, &block)
-    BW::HTTP.get("http://192.168.0.9:3000/locations/#{system_id}") do |response|
+    BW::HTTP.get("http://192.168.0.20:3000/locations/#{system_id}") do |response|
       result_data = BW::JSON.parse(response.body.to_str)
       system_data = result_data[:system]
       block.call(system_data)

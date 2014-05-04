@@ -5,13 +5,13 @@ class AppDelegate
 
     if Twitter::Composer.available?
       exo_facts_controller = ExoFactsController.alloc.initWithNibName(nil, bundle: nil)
-        geo_cache_controller = GeoCachingController.alloc.initWithNibName(nil, bundle: nil)
-        @visited_sites_controller = VisitedSitesController.alloc.initWithNibName(nil, bundle: nil)
-        @visited_nav_controller = UINavigationController.alloc.initWithRootViewController(@visited_sites_controller)
-        adler_controller = AdlerInfoController.alloc.initWithNibName(nil, bundle: nil)
+      geo_cache_controller = GeoCachingController.alloc.initWithNibName(nil, bundle: nil)
+      @visited_sites_controller = VisitedSitesController.alloc.initWithNibName(nil, bundle: nil)
+      @visited_nav_controller = UINavigationController.alloc.initWithRootViewController(@visited_sites_controller)
+      adler_controller = AdlerInfoController.alloc.initWithNibName(nil, bundle: nil)
 
-        tab_controller = UITabBarController.alloc.initWithNibName(nil, bundle: nil)
-        tab_controller.viewControllers = [exo_facts_controller, geo_cache_controller, @visited_nav_controller, adler_controller]
+      tab_controller = UITabBarController.alloc.initWithNibName(nil, bundle: nil)
+      tab_controller.viewControllers = [exo_facts_controller, geo_cache_controller, @visited_nav_controller, adler_controller]
 
       @window.rootViewController = tab_controller
     else
