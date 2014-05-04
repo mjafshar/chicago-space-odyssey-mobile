@@ -16,15 +16,7 @@ class System
     BW::HTTP.get("http://192.168.0.9:3000/locations/#{system_id}") do |response|
       result_data = BW::JSON.parse(response.body.to_str)
       system_data = result_data[:system]
-      # puts "=================="
-      # p system_data
-      # puts "=================="
       block.call(system_data)
-      # if system.id.to_i == -1
-      #   block.call(nil)
-      # else
-      #   block.call(system_data)
-      # end
     end
   end
 end
