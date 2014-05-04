@@ -7,8 +7,8 @@ class VisitedSitesController < UIViewController
     @label.text = "Where you've visited"
     @label.sizeToFit
     @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
-    @visits = User.new
-    @visits.visited_sites(1) do |visits|
+    @user = User.new
+    @user.visited_sites(1) do |visits|
       @location_names = visits.values
       @visits = visits
       @table = UITableView.alloc.initWithFrame(self.view.bounds)
