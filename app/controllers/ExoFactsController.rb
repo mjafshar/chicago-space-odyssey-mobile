@@ -12,7 +12,7 @@ class ExoFactsController < UIViewController
     @add_button.addTarget(self, action:"display_lat_long", forControlEvents:UIControlEventTouchUpInside)
     self.view.addSubview(@add_button)
 
-    dbc = CLLocationCoordinate2D.new(41.8888707, -87.6228732)
+    dbc = CLLocationCoordinate2D.new(41.889911, -87.637657)
     NSLog("=================================================")
     dbc_region = CLCircularRegion.alloc.initWithCenter(dbc, radius:5, identifier:"navy pier")
     NSLog("The dbc_region: #{dbc_region.identifier}")
