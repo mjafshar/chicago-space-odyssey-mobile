@@ -2,23 +2,29 @@ class GeoCachingController < UIViewController
   def viewDidLoad
     super
     self.view.backgroundColor = UIColor.whiteColor
-    @label = UILabel.alloc.initWithFrame(CGRectZero)
-    self.title = "Geo Cache"
-    @label.text = 'Geo Cached items'
-    @label.sizeToFit
-    @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
-    self.view.addSubview(@label)
+    # @label = UILabel.alloc.initWithFrame(CGRectZero)
+    # self.title = "Geo Cache"
+    # @label.text = 'Geo Cached items'
+    # @label.sizeToFit
+    # @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
+    # self.view.addSubview(@label)
 
-    @picture_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    @picture_button.setTitle("Take A Pic", forState:UIControlStateNormal)
-    @picture_button.frame = [[100, 100], [100, 50]]
-    @picture_button.center = CGPointMake(self.view.frame.size.width / 2, @label.center.y + 40)
-    self.view.addSubview @picture_button
-    @view = self
 
-    @picture_button.when(UIControlEventTouchUpInside) do
-      take_picture
-    end
+    @customTextbox = UITextView.alloc.initWithFrame(self.view.bounds)
+    # @customTextbox.borderStyle = UITextBorderStyleRoundedRect
+    @customTextbox.text = "Type.."
+    @customTextbox.textAlignment = UITextAlignmentCenter
+    view.addSubview(@customTextbox)
+
+    # @picture_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+    # @picture_button.setTitle("Take A Pic", forState:UIControlStateNormal)
+    # @picture_button.frame = [[100, 100], [100, 50]]
+    # @picture_button.center = CGPointMake(self.view.frame.size.width / 2, @label.center.y + 40)
+    # self.view.addSubview @picture_button
+
+    # @picture_button.when(UIControlEventTouchUpInside) do
+    #   take_picture
+    # end
   end
 
   def initWithNibName(name, bundle: bundle)
