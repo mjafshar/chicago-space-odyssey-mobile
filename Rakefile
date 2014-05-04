@@ -3,6 +3,7 @@ $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/ios'
 require 'bubble-wrap'
 require 'twittermotion'
+require 'map-kit-wrapper'
 
 begin
   require 'bundler'

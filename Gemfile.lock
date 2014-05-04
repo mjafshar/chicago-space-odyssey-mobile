@@ -1,10 +1,15 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    codependency (2.0.0)
+    map-kit-wrapper (0.0.5)
+      codependency (= 2.0.0)
+      rake
     rake (10.3.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  map-kit-wrapper
   rake
