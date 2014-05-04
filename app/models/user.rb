@@ -1,5 +1,5 @@
 class User
-  PROPERTIES = [:name, :email, :id, :image_url]
+  PROPERTIES = [:id, :provider, :name, :username, :location]
   PROPERTIES.each { |prop|
     attr_accessor prop
   }
@@ -10,5 +10,12 @@ class User
         self.send((key.to_s + "=").to_s, value)
       end
     }
+  end
+
+  def visited_sites(user_id, &block)
+    BW::HTTP.get("http://192.168.0.9:3000/users/#{user_id}/locations") do |response|
+      visits_data = BW::JSON.parse(response.body.to_str)
+      block.call(visits_data)
+    end
   end
 end
