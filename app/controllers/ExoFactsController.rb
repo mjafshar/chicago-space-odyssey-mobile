@@ -18,8 +18,11 @@ class ExoFactsController < UIViewController
     @add_button.frame = CGRect.new([10, 50], @add_button.frame.size)
     @add_button.addTarget(self, action:"display_lat_long", forControlEvents:UIControlEventTouchUpInside)
     self.view.addSubview(@add_button)
-    dbc = CLLocationCoordinate2D.new(41.889931, -87.635597)
-    dbc_region = CLCircularRegion.alloc.initCircularRegionWithCenter(dbc, radius:10, identifier:"Navy Pier")
+
+    dbc = CLLocationCoordinate2D.new(41.8917097, -87.6109747)
+    NSLog("=================================================")
+    dbc_region = CLCircularRegion.alloc.initWithCenter(dbc, radius:20, identifier:"Bubba Gump")
+    NSLog("The dbc_region: #{dbc_region.identifier}")
     @location_manager.startMonitoringForRegion(dbc_region)
     @location_manager.requestStateForRegion(dbc_region)
   end
@@ -35,17 +38,20 @@ class ExoFactsController < UIViewController
    if (CLLocationManager.locationServicesEnabled) 
      @location_manager = CLLocationManager.alloc.init 
      @location_manager.desiredAccuracy = KCLLocationAccuracyBest
+     @location_manager.distanceFilter = 5
      @location_manager.delegate = self 
+     @location_manager.pausesLocationUpdatesAutomatically = false
      @location_manager.startUpdatingLocation 
    else 
      show_error_message(' Enable the Location Services for this app in Settings.') 
    end 
   end
 
-  def locationManager(manager, didUpdateToLocation:newLocation, fromLocation:oldLocation) 
-   @latitude = newLocation.coordinate.latitude 
-   @longitude = newLocation.coordinate.longitude 
+  def locationManager(manager, didUpdateLocations:locations) 
+   @latitude = locations.last.coordinate.latitude 
+   @longitude = locations.last.coordinate.longitude 
    # @location_manager.stopUpdatingLocation    
+   # @location_manager.startUpdatingLocation 
   end 
  
   def locationManager(manager, didFailWithError:error) 
@@ -58,6 +64,10 @@ class ExoFactsController < UIViewController
     alert.addButtonWithTitle("OK") 
     alert.message = "You have entered the region! Hooray!" 
     alert.show     
+  end
+
+  def locationManager(manager, didExitRegion:region)
+    general_alert("exited region")
   end
 
   def locationManager(manager, monitoringDidFailForRegion:region, withError:error)
