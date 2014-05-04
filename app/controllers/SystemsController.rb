@@ -3,19 +3,24 @@ class SystemsController < UIViewController
   def viewDidLoad
     super
     self.view.backgroundColor = UIColor.whiteColor
-    @label = UILabel.alloc.initWithFrame(CGRectZero)
     id = self.system_id
+
     System.pull_system_data(id) do |system|
-      if system.nil?
-        self.title = "Error"
-        @label.text = "Error"
-      else
-        self.title = system[:name]
-        @label.text = system[:description]
-        @label.sizeToFit
-        @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
-        self.view.addSubview(@label)
-      end
+      self.title = system[:name]
+
+      frame = UIScreen.mainScreen.applicationFrame
+      origin = frame.origin
+      size = frame.size
+      body = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [size.width, size.height]])
+      body.text = system[:description]
+      body.editable = false
+      scroll_view = UIScrollView.alloc.initWithFrame(frame)
+
+      scroll_view.showsVerticalScrollIndicator = true
+      scroll_view.scrollEnabled = true
+      scroll_view.addSubview(body)
+      scroll_view.contentSize = body.frame.size
+      self.view.addSubview(scroll_view)
     end
   end
 
