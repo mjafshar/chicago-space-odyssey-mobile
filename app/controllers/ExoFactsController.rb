@@ -12,23 +12,28 @@ class ExoFactsController < UIViewController
     @add_button.addTarget(self, action:"display_lat_long", forControlEvents:UIControlEventTouchUpInside)
     self.view.addSubview(@add_button)
 
+    adler_planetarium = CLLocationCoordinate2D.new(41.866333, -87.606783)
+    soldier_field = CLLocationCoordinate2D.new(41.862074, -87.616804)
+    ferris_wheel = CLLocationCoordinate2D.new(41.891712, -87.607244)
+    mill_park = CLLocationCoordinate2D.new(41.882672, -87.623340)
+    merch_mart = CLLocationCoordinate2D.new(41.888477, -87.635407)
     dbc = CLLocationCoordinate2D.new(41.889911, -87.637657)
-    NSLog("=================================================")
-    dbc_region = CLCircularRegion.alloc.initWithCenter(dbc, radius:5, identifier:"navy pier")
-    NSLog("The dbc_region: #{dbc_region.identifier}")
-    @location_manager.startMonitoringForRegion(dbc_region)
-    @location_manager.requestStateForRegion(dbc_region)
-  end
+    us_cell = CLLocationCoordinate2D.new(41.830273, -87.633348)
+    wrigley = CLLocationCoordinate2D.new(41.947854, -87.655642)
+    pile = CLLocationCoordinate2D.new(41.792015, -87.599959)
 
 
-  def initWithNibName(name, bundle: bundle)
-    super
-    self.tabBarItem = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemFeatured, tag: 1)
-    self
-  end
+    adler_planetarium_region = CLCircularRegion.alloc.initWithCenter(adler_planetarium, radius: 50, identifier:"Adler Planetarium")
+    soldier_field_region = CLCircularRegion.alloc.initWithCenter(soldier_field, radius: 50, identifier:"Soldier Field")
+    ferris_wheel_region = CLCircularRegion.alloc.initWithCenter(ferris_wheel, radius: 50, identifier:"Navy Pier Ferris Wheel")
+    mill_park_region = CLCircularRegion.alloc.initWithCenter(mill_park, radius: 50, identifier:"Millenium Park")
+    merch_mart_region = CLCircularRegion.alloc.initWithCenter(merch_mart, radius: 50, identifier:"Merchandise Mart")
+    dbc_region = CLCircularRegion.alloc.initWithCenter(dbc, radius: 50, identifier:"Dev Bootcamp")
+    us_cell_region = CLCircularRegion.alloc.initWithCenter(us_cell, radius: 50, identifier:"US Cellular Field")
+    wrigley_region = CLCircularRegion.alloc.initWithCenter(wrigley, radius: 50, identifier:"Wrigley Field")
+    pile_region = CLCircularRegion.alloc.initWithCenter(pile, radius: 50, identifier:"Chicago Pile-1")
 
-  def check_location 
-    if (CLLocationManager.locationServicesEnabled) 
+    if CLLocationManager.locationServicesEnabled
       @location_manager = CLLocationManager.alloc.init 
       @location_manager.desiredAccuracy = 1.0
       @location_manager.distanceFilter = 5
