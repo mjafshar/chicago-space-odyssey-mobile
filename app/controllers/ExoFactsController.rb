@@ -32,7 +32,7 @@ class ExoFactsController < UIViewController
     @wrigley_region = CLCircularRegion.alloc.initWithCenter(@wrigley, radius: 50, identifier:"Wrigley Field")
     @pile_region = CLCircularRegion.alloc.initWithCenter(@pile, radius: 50, identifier:"Chicago Pile-1")
 
-    all_regions = [@adler_planetarium_region, @soldier_field_region, @ferris_wheel_region, @mill_park_region, @merch_mart_region, @dbc_region, @us_cell_region, @wrigley_region, @pile_region]
+    @all_regions = [@adler_planetarium_region, @soldier_field_region, @ferris_wheel_region, @mill_park_region, @merch_mart_region, @dbc_region, @us_cell_region, @wrigley_region, @pile_region]
 
     if CLLocationManager.locationServicesEnabled
 
@@ -77,9 +77,13 @@ class ExoFactsController < UIViewController
             calculateDistance(@user_coords, region.center) < 50
           end
 
+          puts "The region state array is: #{@regionStateArray.first.identifier}"
+
           if @regionStateArray.first != nil
-            @locations.each.with_index do |location, index|
+            @all_regions.each_with_index do |location, index|
+              puts location.identifier
               if location.containsCoordinate(@user_coords)
+                puts "Contains: #{location.identifier}, #{index}"
                 # general_alert("#{location.identifier} contains your coords")
                 location_id = index + 1
                 self.view.backgroundColor = UIColor.whiteColor
@@ -112,7 +116,7 @@ class ExoFactsController < UIViewController
             # systems_controller = SystemsController.alloc.initWithParams({location_id: location_id})
             # self.view.addSubview(systems_controller)
           elsif @regionStateArray.first == nil
-            createMap(all_regions)
+            createMap(@all_regions)
           end
 
           NSLog("Enabling region monitoring.")
