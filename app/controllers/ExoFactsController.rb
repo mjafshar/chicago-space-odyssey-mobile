@@ -65,6 +65,7 @@ class ExoFactsController < UIViewController
           @location_manager.startMonitoringForRegion(@wrigley_region, desiredAccuracy: 1.0)
           @location_manager.startMonitoringForRegion(@pile_region, desiredAccuracy: 1.0)
 
+
           NSLog("The location manager: #{@location_manager.inspect}")
           @user_coords = @location_manager.location.coordinate
           @regionStateArray = []
@@ -77,18 +78,39 @@ class ExoFactsController < UIViewController
           end
 
           if @regionStateArray.first != nil
-            @locations.each do |location|
+            @locations.each.with_index do |location, index|
               if location.containsCoordinate(@user_coords)
-                general_alert("#{location.identifier} contains your coords")
+                # general_alert("#{location.identifier} contains your coords")
+                location_id = index + 1
+                self.view.backgroundColor = UIColor.whiteColor
+                # systems_controller = SystemsController.alloc.initWithParams({location_id: location_id})
+                    System.pull_system_data(location_id) do |system|
+                      self.title = system[:name]
+
+                      frame = UIScreen.mainScreen.applicationFrame
+                      origin = frame.origin
+                      size = frame.size
+                      body = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [size.width, size.height]])
+                      body.text = system[:description]
+                      body.editable = false
+                      scroll_view = UIScrollView.alloc.initWithFrame(frame)
+
+                      scroll_view.showsVerticalScrollIndicator = true
+                      scroll_view.scrollEnabled = true
+                      scroll_view.addSubview(body)
+                      scroll_view.contentSize = body.frame.size
+                      self.view.addSubview(scroll_view)
+                    end
               end
             end
-            self.view.backgroundColor = UIColor.whiteColor
-            @label = UILabel.alloc.initWithFrame(CGRectZero)
-            self.title = "Exo System"
-            @label.text = 'Exo-system Facts'
-            @label.sizeToFit
-            @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
-            self.view.addSubview(@label)
+            # self.view.backgroundColor = UIColor.whiteColor
+            # @label = UILabel.alloc.initWithFrame(CGRectZero)
+            # self.title = "Exo System"
+            # @label.text = 'Exo-system Facts'
+            # @label.sizeToFit
+            # @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
+            # systems_controller = SystemsController.alloc.initWithParams({location_id: location_id})
+            # self.view.addSubview(systems_controller)
           elsif @regionStateArray.first == nil
             createMap(all_regions)
           end
