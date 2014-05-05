@@ -55,15 +55,15 @@ class ExoFactsController < UIViewController
         end
 
         if CLLocationManager.regionMonitoringAvailable
-          @location_manager.startMonitoringForRegion(adler_planetarium_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(soldier_field_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(ferris_wheel_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(mill_park_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(merch_mart_region, desiredAccuracy: 1.0)
-          @location_manager.stopMonitoringForRegion(dbc_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(us_cell_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(wrigley_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(pile_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(@adler_planetarium_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(@soldier_field_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(@ferris_wheel_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(@mill_park_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(@merch_mart_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(@dbc_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(@us_cell_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(@wrigley_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(@pile_region, desiredAccuracy: 1.0)
 
           NSLog("The location manager: #{@location_manager.inspect}")
           @user_coords = @location_manager.location.coordinate
@@ -77,6 +77,11 @@ class ExoFactsController < UIViewController
           end
 
           if @regionStateArray.first != nil
+            @locations.each do |location|
+              if location.containsCoordinate(@user_coords)
+                general_alert("#{location.identifier} contains your coords")
+              end
+            end
             self.view.backgroundColor = UIColor.whiteColor
             @label = UILabel.alloc.initWithFrame(CGRectZero)
             self.title = "Exo System"
