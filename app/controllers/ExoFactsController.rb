@@ -41,13 +41,105 @@ class ExoFactsController < UIViewController
       @location_manager.pausesLocationUpdatesAutomatically = false
       @location_manager.activityType = CLActivityTypeFitness
       @location_manager.startUpdatingLocation 
-    else 
-     show_error_message(' Enable the Location Services for this app in Settings.') 
-    end 
+      puts "We have location enabled!"
+
+
+      if CLLocationManager.significantLocationChangeMonitoringAvailable
+        @location_manager.startMonitoringSignificantLocationChanges 
+        puts "We're hopefully monitoring changes!'"
+      else
+        NSLog("Significant location change service not available.")
+      end
+
+      if CLLocationManager.regionMonitoringAvailable 
+        @location_manager.startMonitoringForRegion(adler_planetarium_region, desiredAccuracy: 1.0) 
+        @location_manager.startMonitoringForRegion(soldier_field_region, desiredAccuracy: 1.0) 
+        @location_manager.startMonitoringForRegion(ferris_wheel_region, desiredAccuracy: 1.0) 
+        @location_manager.startMonitoringForRegion(mill_park_region, desiredAccuracy: 1.0) 
+        @location_manager.startMonitoringForRegion(merch_mart_region, desiredAccuracy: 1.0) 
+        @location_manager.startMonitoringForRegion(dbc_region, desiredAccuracy: 1.0) 
+        @location_manager.startMonitoringForRegion(us_cell_region, desiredAccuracy: 1.0) 
+        @location_manager.startMonitoringForRegion(wrigley_region, desiredAccuracy: 1.0) 
+        @location_manager.startMonitoringForRegion(pile_region, desiredAccuracy: 1.0) 
+
+        @user_coords = @location_manager.location.coordinate
+        @regionStateArray = []
+
+        @locations = []
+        @location_manager.monitoredRegions.each {|region| @locations << region}
+
+        @regionStateArray << @locations.find do |region|
+          calculateDistance(@user_coords, region.center) < 50
+        end
+
+        if @regionStateArray.first != nil
+          self.view.backgroundColor = UIColor.whiteColor
+          @label = UILabel.alloc.initWithFrame(CGRectZero)
+          self.title = "Exo System"
+          @label.text = 'Exo-system Facts'
+          @label.sizeToFit
+          @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
+          self.view.addSubview(@label)
+        elsif @regionStateArray.first == nil
+          createMap
+        end
+
+        NSLog("Enabling region monitoring.")
+      else
+        NSLog("Warning: Region monitoring not supported on this device.")
+      end
+
+    else
+      NSLog("Location services not enabled. FIX IT IN SETTINGS!")
+    end
+
   end
 
+
+  def initWithNibName(name, bundle: bundle)
+    super
+    self.tabBarItem = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemFeatured, tag: 1)
+    self
+  end
+
+  def calculateDistance(coord1, coord2)
+    earths_radius = 6371
+    lat_diff = (coord2.latitude - coord1.latitude) * (Math::PI / 180)
+    long_diff = (coord2.longitude - coord1.longitude) * (Math::PI / 180)
+    lat1_in_radians = coord1.latitude * (Math::PI / 180)
+    lat2_in_radians = coord2.latitude * (Math::PI / 180)
+    nA = (Math.sin(lat_diff/2) ** 2 ) + Math.cos(lat1_in_radians) * Math.cos(lat2_in_radians) * ( Math.sin(long_diff/2) ** 2 )
+    nC = 2 * Math.atan2( Math.sqrt(nA), Math.sqrt( 1 - nA ))
+    nD = earths_radius * nC
+    return nD * 1000
+  end
+
+  def createMap
+    map = MapView.new
+    map.frame = self.view.frame
+    map.delegate = self
+    map.region = CoordinateRegion.new([41.8337329, -87.7321555], [1, 1])
+    map.shows_user_location = true
+    map.zoom_enabled = true
+    map.scroll_enabled = true
+    view.addSubview(map)
+  end
+
+  # def check_location 
+  #   if (CLLocationManager.locationServicesEnabled) 
+  #     @location_manager = CLLocationManager.alloc.init 
+  #     @location_manager.desiredAccuracy = 1.0
+  #     @location_manager.distanceFilter = 5
+  #     @location_manager.delegate = self 
+  #     @location_manager.pausesLocationUpdatesAutomatically = false
+  #     @location_manager.activityType = CLActivityTypeFitness
+  #     @location_manager.startUpdatingLocation 
+  #   else 
+  #    show_error_message(' Enable the Location Services for this app in Settings.') 
+  #   end 
+  # end
+
   def locationManager(manager, didUpdateLocations:locations) 
-    puts "#{locations.inspect}"
    @latitude = locations.last.coordinate.latitude 
    @longitude = locations.last.coordinate.longitude 
    # @location_manager.stopUpdatingLocation    
