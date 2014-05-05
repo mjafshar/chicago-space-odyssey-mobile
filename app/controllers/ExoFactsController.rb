@@ -3,8 +3,8 @@ class ExoFactsController < UIViewController
 
   def viewDidLoad
     super
-
-    check_location
+    
+    # check_location
     @add_button = UIButton.buttonWithType(UIButtonTypeRoundedRect) 
     @add_button.setTitle("Add", forState:UIControlStateNormal) 
     @add_button.sizeToFit
