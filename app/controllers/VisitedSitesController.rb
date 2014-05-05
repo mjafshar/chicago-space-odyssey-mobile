@@ -49,7 +49,7 @@ class VisitedSitesController < UIViewController
     location = @visits.select{ |key, value| value == location_name }
     location_id = location.keys.first.to_i
 
-    systems_controller = SystemsController.alloc.initWithParams({system_id: location_id})
+    systems_controller = SystemsController.alloc.initWithParams({location_id: location_id})
     self.navigationController.pushViewController(systems_controller, animated:true)
   end
 end

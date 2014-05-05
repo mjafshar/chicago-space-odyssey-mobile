@@ -1,9 +1,9 @@
 class SystemsController < UIViewController
-  attr_accessor :system_id
+  attr_accessor :location_id
   def viewDidLoad
     super
     self.view.backgroundColor = UIColor.whiteColor
-    id = self.system_id
+    id = self.location_id
 
     System.pull_system_data(id) do |system|
       self.title = system[:name]
@@ -26,7 +26,7 @@ class SystemsController < UIViewController
 
   def initWithParams(params = {})
     init()
-    self.system_id = params[:system_id]
+    self.location_id = params[:location_id]
     self
   end
 end
