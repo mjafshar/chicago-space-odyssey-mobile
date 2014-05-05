@@ -95,7 +95,7 @@ class GeoCachingController < UIViewController
     puts @composer_text_view.text
     # textFieldShouldReturn(@composer_text_view)
     data = {}
-    data = {image: encode_image(@image_view), text: @composer_text_view.text, user_id: user_id}
+    data = {image: encode_image(@image_view), text: @composer_text_view.text, user_id: user_id, location_id: @defaults['user_location']}
     data[:text] ||= ''
     data[:image] ||= ''
     hide_message_composer
