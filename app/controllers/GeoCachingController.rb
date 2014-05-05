@@ -38,10 +38,14 @@ class GeoCachingController < UIViewController
 
     view.addSubview(@customTextbox)
 
-
     # picture_button.when(UIControlEventTouchUpInside) do
     #   take_picture
     # end
+  end
+
+  def textFieldShouldReturn(textField)
+    textField.resignFirstResponder
+    true
   end
 
   def initWithNibName(name, bundle: bundle)
@@ -53,12 +57,15 @@ class GeoCachingController < UIViewController
   def take_picture
     # Have picture process in background
     BW::Device.camera.rear.picture(media_types: [:movie, :image]) do |result|
-      image_view = UIImageView.alloc.initWithImage(result[:original_image])
-      image = UIImage.UIImagePNGRepresentation(image_view.image)
-      encodedImage = [image].pack('m0')
-      data = {image: encodedImage, text: "Some text"}
-      send_post_request(data)
+      @image_view = UIImageView.alloc.initWithImage(result[:original_image])
+      @image_view
     end
+  end
+
+  def encode_image(image_view)
+    image = UIImage.UIImagePNGRepresentation(image_view.image)
+    encodedImage = [image].pack('m0')
+    encodedImage
   end
 
   def send_post_request(payload)
@@ -69,6 +76,9 @@ class GeoCachingController < UIViewController
 
   def submit
     puts @customTextbox.text
+    textFieldShouldReturn(@customTextbox)
+    data = {image: encode_image(@image_view), text: @customTextbox.text}
+    # send_post_request(data)
     # How to close view on submit
   end
 
