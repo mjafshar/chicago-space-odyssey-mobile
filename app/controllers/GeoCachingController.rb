@@ -74,8 +74,8 @@ class GeoCachingController < UIViewController
   end
 
   def send_post_request(payload)
-    # Have sending process in background
-    BW::HTTP.post("http://tosche-station.herokuapp.com/collections/create", {payload: payload}) do |response|
+    # Have sending process in background, when phone is turned off or app is in background
+    BW::HTTP.post("http://192.168.0.90:3000/collections/create", {payload: payload}) do |response|
     end
   end
 
@@ -86,7 +86,7 @@ class GeoCachingController < UIViewController
     data = {image: encode_image(@image_view), text: @customTextbox.text}
     data[:text] ||= ''
     data[:image] ||= ''
-    # send_post_request(data)
+    send_post_request(data)
     @image_view = nil
     @customTextbox.text = 'Type something'
     # How to close view on submit
