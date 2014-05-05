@@ -77,8 +77,6 @@ class ExoFactsController < UIViewController
             calculateDistance(@user_coords, region.center) < 50
           end
 
-          puts "The region state array is: #{@regionStateArray.first.identifier}"
-
           if @regionStateArray.first != nil
             @all_regions.each_with_index do |location, index|
               puts location.identifier
