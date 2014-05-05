@@ -34,62 +34,72 @@ class ExoFactsController < UIViewController
     pile_region = CLCircularRegion.alloc.initWithCenter(pile, radius: 50, identifier:"Chicago Pile-1")
 
     if CLLocationManager.locationServicesEnabled
-      @location_manager = CLLocationManager.alloc.init
-      @location_manager.desiredAccuracy = 1.0
-      @location_manager.distanceFilter = 5
-      @location_manager.delegate = self
-      @location_manager.pausesLocationUpdatesAutomatically = false
-      @location_manager.activityType = CLActivityTypeFitness
-      @location_manager.startUpdatingLocation
-      puts "We have location enabled!"
+
+      if (CLLocationManager.authorizationStatus == KCLAuthorizationStatusAuthorized)
+
+        @location_manager = CLLocationManager.alloc.init
+        @location_manager.desiredAccuracy = 1.0
+        @location_manager.distanceFilter = 5
+        @location_manager.delegate = self
+        @location_manager.pausesLocationUpdatesAutomatically = false
+        @location_manager.activityType = CLActivityTypeFitness
+        @location_manager.startUpdatingLocation
+        puts "We have location enabled!"
 
 
-      if CLLocationManager.significantLocationChangeMonitoringAvailable
-        @location_manager.startMonitoringSignificantLocationChanges
-        puts "We're hopefully monitoring changes!'"
-      else
-        NSLog("Significant location change service not available.")
-      end
-
-      if CLLocationManager.regionMonitoringAvailable
-        @location_manager.startMonitoringForRegion(adler_planetarium_region, desiredAccuracy: 1.0)
-        @location_manager.startMonitoringForRegion(soldier_field_region, desiredAccuracy: 1.0)
-        @location_manager.startMonitoringForRegion(ferris_wheel_region, desiredAccuracy: 1.0)
-        @location_manager.startMonitoringForRegion(mill_park_region, desiredAccuracy: 1.0)
-        @location_manager.startMonitoringForRegion(merch_mart_region, desiredAccuracy: 1.0)
-        @location_manager.startMonitoringForRegion(dbc_region, desiredAccuracy: 1.0)
-        @location_manager.startMonitoringForRegion(us_cell_region, desiredAccuracy: 1.0)
-        @location_manager.startMonitoringForRegion(wrigley_region, desiredAccuracy: 1.0)
-        @location_manager.startMonitoringForRegion(pile_region, desiredAccuracy: 1.0)
-
-        @user_coords = @location_manager.location.coordinate
-        @regionStateArray = []
-
-        @locations = []
-        @location_manager.monitoredRegions.each {|region| @locations << region}
-
-        @regionStateArray << @locations.find do |region|
-          calculateDistance(@user_coords, region.center) < 50
+        if CLLocationManager.significantLocationChangeMonitoringAvailable
+          @location_manager.startMonitoringSignificantLocationChanges
+          puts "We're hopefully monitoring changes!'"
+        else
+          NSLog("Significant location change service not available.")
         end
 
-        if @regionStateArray.first != nil
-          self.view.backgroundColor = UIColor.whiteColor
-          @label = UILabel.alloc.initWithFrame(CGRectZero)
-          self.title = "Exo System"
-          @label.text = 'Exo-system Facts'
-          @label.sizeToFit
-          @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
-          self.view.addSubview(@label)
-        elsif @regionStateArray.first == nil
-          createMap
+        if CLLocationManager.regionMonitoringAvailable
+          @location_manager.startMonitoringForRegion(adler_planetarium_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(soldier_field_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(ferris_wheel_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(mill_park_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(merch_mart_region, desiredAccuracy: 1.0)
+          @location_manager.stopMonitoringForRegion(dbc_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(us_cell_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(wrigley_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(pile_region, desiredAccuracy: 1.0)
+
+          NSLog("The location manager: #{@location_manager.inspect}")
+          @user_coords = @location_manager.location.coordinate
+          @regionStateArray = []
+
+          @locations = []
+          @location_manager.monitoredRegions.each {|region| @locations << region}
+
+          @regionStateArray << @locations.find do |region|
+            calculateDistance(@user_coords, region.center) < 50
+          end
+
+          if @regionStateArray.first != nil
+            self.view.backgroundColor = UIColor.whiteColor
+            @label = UILabel.alloc.initWithFrame(CGRectZero)
+            self.title = "Exo System"
+            @label.text = 'Exo-system Facts'
+            @label.sizeToFit
+            @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
+            self.view.addSubview(@label)
+          elsif @regionStateArray.first == nil
+            createMap
+          end
+
+          NSLog("Enabling region monitoring.")
+        else
+          NSLog("Warning: Region monitoring not supported on this device.")
         end
-
-        NSLog("Enabling region monitoring.")
       else
-        NSLog("Warning: Region monitoring not supported on this device.")
+        NSLog("Location services for this app not enabled")
+        self.view.backgroundColor = UIColor.whiteColor
+        general_alert("Location services not enabled.")
       end
-
     else
+      self.view.backgroundColor = UIColor.whiteColor
+      general_alert("Location services not enabled.")
       NSLog("Location services not enabled. FIX IT IN SETTINGS!")
     end
 
@@ -140,6 +150,7 @@ class ExoFactsController < UIViewController
   # end
 
   def locationManager(manager, didUpdateLocations:locations)
+    NSLog("The locations coming through: #{locations.inspect}")
    @latitude = locations.last.coordinate.latitude
    @longitude = locations.last.coordinate.longitude
    # @location_manager.stopUpdatingLocation
