@@ -184,32 +184,52 @@ class ExoFactsController < UIViewController
   end
 
   def locationManager(manager, didDetermineState: state, forRegion: region)
-    if state == CLRegionStateInside
-      # general_alert("inside the region!")
-      self.view.backgroundColor = UIColor.whiteColor
-      @label = UILabel.alloc.initWithFrame(CGRectZero)
-      self.title = "Exo System"
-      @label.text = 'Exo-system Facts'
-      @label.sizeToFit
-      @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
-      self.view.addSubview(@label)
-    else
-      # general_alert("outside the region :(")
-      map = MapView.new
-      map.frame = self.view.frame
-      map.delegate = self
-      map.region = CoordinateRegion.new([41.8337329, -87.7321555], [1, 1])
-      map.shows_user_location = true
-      map.zoom_enabled = true
-      map.scroll_enabled = true
+    puts "just before iiffffsss"
+    @regionStateArray << state
+    puts "LOOK HERE!!!! #{@regionStateArray}"
 
-      bull = MKPointAnnotation.new
-      bull_coords = CLLocationCoordinate2D.new(41.8896956, -87.634291)
-      bull.coordinate = bull_coords
-      bull.title = "Bull and Bear"
-      map.addAnnotation(bull)
-      view.addSubview(map)
+    if state == CLRegionStateInside
+      puts "inside state: #{state}"
+      puts "Region inside state: #{CLRegionStateInside}"
+      puts "Region: #{region.identifier}"
+      puts "we're inside YO!"
+      general_alert("inside the region! #{region.identifier}")
+      
+      # @label = UILabel.alloc.initWithFrame(CGRectZero)
+      # self.title = "Exo System"
+      # @label.text = 'Exo-system Facts'
+      # @label.sizeToFit
+      # @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
+      # self.view.addSubview(@label)
+    # elsif state == CLRegionStateOutside
+  else
+      puts "outside state: #{state}"
+      puts "Region: #{region.identifier}"
+      general_alert("outside the region #{region.identifier} :(")
+      puts "We're outside YO!"
+
+        # if !@regionStateArray.include?(1)
+        #   map = MapView.new
+        #   map.frame = self.view.frame
+        #   map.delegate = self
+        #   map.region = CoordinateRegion.new([41.8337329, -87.7321555], [1, 1])
+        #   map.shows_user_location = true
+        #   map.zoom_enabled = true
+        #   map.scroll_enabled = true
+        #   view.addSubview(map)
+
+      # bull = MKPointAnnotation.new
+      # bull_coords = CLLocationCoordinate2D.new(41.8896956, -87.634291)
+      # bull.coordinate = bull_coords
+      # bull.title = "Bull and Bear"
+      # map.addAnnotation(bull)
+        end
+    # else
+    #   general_alert("HEY HEYE HEHEYYEHHEYEYHEY HEY hi")
+    #   puts "another erroooorr?"
     end
+
+    puts "wtf is happening at the END - THIS IS THE LAST LINE"
   end
 
   def show_error_message(message) 
