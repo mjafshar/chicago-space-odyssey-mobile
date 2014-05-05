@@ -1,25 +1,20 @@
-class VisitedSitesController < UIViewController
+class VisitedSitesController < UITableViewController
   def viewDidLoad
     super
     self.view.backgroundColor = UIColor.whiteColor
     self.title = "Visits"
+  end
+
+  def initWithNibName(name, bundle: bundle)
+    super
 
     @user = User.new
     user_id = 1
     @user.visited_sites(user_id) do |visits|
       @location_names = visits.values
       @visits = visits
-      @table = UITableView.alloc.initWithFrame(self.view.bounds)
-      @table.autoresizingMask = UIViewAutoresizingFlexibleHeight
-      self.view.addSubview(@table)
-
-      @table.dataSource = self
-      @table.delegate = self
     end
-  end
 
-  def initWithNibName(name, bundle: bundle)
-    super
     self.tabBarItem = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemHistory, tag: 3)
     self
   end
