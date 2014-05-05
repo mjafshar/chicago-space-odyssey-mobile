@@ -18,6 +18,7 @@ class GeoCachingController < UIViewController
     toolbar.backgroundColor = UIColor.lightGrayColor
 
     submit.setTitle("Submit", forState:UIControlStateNormal)
+    submit.setTitle("Sending", forState:UIControlStateHighlighted)
     submit.addTarget(self, action: 'submit', forControlEvents: UIControlEventTouchUpInside)
     submit.center = CGPointMake(250, 0)
     submit.sizeToFit
@@ -33,7 +34,7 @@ class GeoCachingController < UIViewController
     toolbar.addSubview(submit)
 
     @customTextbox.inputAccessoryView = toolbar
-    @customTextbox.text = "Type.."
+    @customTextbox.text = "Type something"
     @customTextbox.textAlignment = UITextAlignmentCenter
 
     view.addSubview(@customTextbox)
@@ -63,9 +64,13 @@ class GeoCachingController < UIViewController
   end
 
   def encode_image(image_view)
-    image = UIImage.UIImagePNGRepresentation(image_view.image)
-    encodedImage = [image].pack('m0')
-    encodedImage
+    if image_view != nil
+      image = UIImage.UIImagePNGRepresentation(image_view.image)
+      encodedImage = [image].pack('m0')
+      return encodedImage
+    else
+      return nil
+    end
   end
 
   def send_post_request(payload)
@@ -77,8 +82,13 @@ class GeoCachingController < UIViewController
   def submit
     puts @customTextbox.text
     textFieldShouldReturn(@customTextbox)
+    data = {}
     data = {image: encode_image(@image_view), text: @customTextbox.text}
+    data[:text] ||= ''
+    data[:image] ||= ''
     # send_post_request(data)
+    @image_view = nil
+    @customTextbox.text = 'Type something'
     # How to close view on submit
   end
 
