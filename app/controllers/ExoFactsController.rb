@@ -12,31 +12,31 @@ class ExoFactsController < UIViewController
     @add_button.addTarget(self, action:"display_lat_long", forControlEvents:UIControlEventTouchUpInside)
     self.view.addSubview(@add_button)
 
-    adler_planetarium = CLLocationCoordinate2D.new(41.866333, -87.606783)
-    soldier_field = CLLocationCoordinate2D.new(41.862074, -87.616804)
-    ferris_wheel = CLLocationCoordinate2D.new(41.891712, -87.607244)
-    mill_park = CLLocationCoordinate2D.new(41.882672, -87.623340)
-    merch_mart = CLLocationCoordinate2D.new(41.888477, -87.635407)
-    dbc = CLLocationCoordinate2D.new(41.889911, -87.637657)
-    us_cell = CLLocationCoordinate2D.new(41.830273, -87.633348)
-    wrigley = CLLocationCoordinate2D.new(41.947854, -87.655642)
-    pile = CLLocationCoordinate2D.new(41.792015, -87.599959)
+    @adler_planetarium = CLLocationCoordinate2D.new(41.866333, -87.606783)
+    @soldier_field = CLLocationCoordinate2D.new(41.862074, -87.616804)
+    @ferris_wheel = CLLocationCoordinate2D.new(41.891712, -87.607244)
+    @mill_park = CLLocationCoordinate2D.new(41.882672, -87.623340)
+    @merch_mart = CLLocationCoordinate2D.new(41.888477, -87.635407)
+    @dbc = CLLocationCoordinate2D.new(41.889911, -87.637657)
+    @us_cell = CLLocationCoordinate2D.new(41.830273, -87.633348)
+    @wrigley = CLLocationCoordinate2D.new(41.947854, -87.655642)
+    @pile = CLLocationCoordinate2D.new(41.792015, -87.599959)
 
+    @adler_planetarium_region = CLCircularRegion.alloc.initWithCenter(@adler_planetarium, radius: 50, identifier:"Adler Planetarium")
+    @soldier_field_region = CLCircularRegion.alloc.initWithCenter(@soldier_field, radius: 50, identifier:"Soldier Field")
+    @ferris_wheel_region = CLCircularRegion.alloc.initWithCenter(@ferris_wheel, radius: 50, identifier:"Navy Pier Ferris Wheel")
+    @mill_park_region = CLCircularRegion.alloc.initWithCenter(@mill_park, radius: 50, identifier:"Millenium Park")
+    @merch_mart_region = CLCircularRegion.alloc.initWithCenter(@merch_mart, radius: 50, identifier:"Merchandise Mart")
+    @dbc_region = CLCircularRegion.alloc.initWithCenter(@dbc, radius: 50, identifier:"Dev Bootcamp")
+    @us_cell_region = CLCircularRegion.alloc.initWithCenter(@us_cell, radius: 50, identifier:"US Cellular Field")
+    @wrigley_region = CLCircularRegion.alloc.initWithCenter(@wrigley, radius: 50, identifier:"Wrigley Field")
+    @pile_region = CLCircularRegion.alloc.initWithCenter(@pile, radius: 50, identifier:"Chicago Pile-1")
 
-    adler_planetarium_region = CLCircularRegion.alloc.initWithCenter(adler_planetarium, radius: 50, identifier:"Adler Planetarium")
-    soldier_field_region = CLCircularRegion.alloc.initWithCenter(soldier_field, radius: 50, identifier:"Soldier Field")
-    ferris_wheel_region = CLCircularRegion.alloc.initWithCenter(ferris_wheel, radius: 50, identifier:"Navy Pier Ferris Wheel")
-    mill_park_region = CLCircularRegion.alloc.initWithCenter(mill_park, radius: 50, identifier:"Millenium Park")
-    merch_mart_region = CLCircularRegion.alloc.initWithCenter(merch_mart, radius: 50, identifier:"Merchandise Mart")
-    dbc_region = CLCircularRegion.alloc.initWithCenter(dbc, radius: 50, identifier:"Dev Bootcamp")
-    us_cell_region = CLCircularRegion.alloc.initWithCenter(us_cell, radius: 50, identifier:"US Cellular Field")
-    wrigley_region = CLCircularRegion.alloc.initWithCenter(wrigley, radius: 50, identifier:"Wrigley Field")
-    pile_region = CLCircularRegion.alloc.initWithCenter(pile, radius: 50, identifier:"Chicago Pile-1")
+    all_regions = [@adler_planetarium_region, @soldier_field_region, @ferris_wheel_region, @mill_park_region, @merch_mart_region, @dbc_region, @us_cell_region, @wrigley_region, @pile_region]
 
     if CLLocationManager.locationServicesEnabled
 
       if (CLLocationManager.authorizationStatus == KCLAuthorizationStatusAuthorized)
-
         @location_manager = CLLocationManager.alloc.init
         @location_manager.desiredAccuracy = 1.0
         @location_manager.distanceFilter = 5
@@ -85,7 +85,7 @@ class ExoFactsController < UIViewController
             @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
             self.view.addSubview(@label)
           elsif @regionStateArray.first == nil
-            createMap
+            createMap(all_regions)
           end
 
           NSLog("Enabling region monitoring.")
@@ -93,6 +93,8 @@ class ExoFactsController < UIViewController
           NSLog("Warning: Region monitoring not supported on this device.")
         end
       else
+        @location_manager = CLLocationManager.alloc.init
+        @location_manager.startUpdatingLocation
         NSLog("Location services for this app not enabled")
         self.view.backgroundColor = UIColor.whiteColor
         general_alert("Location services not enabled.")
@@ -124,7 +126,7 @@ class ExoFactsController < UIViewController
     return nD * 1000
   end
 
-  def createMap
+  def createMap(all_regions)
     map = MapView.new
     map.frame = self.view.frame
     map.delegate = self
@@ -132,6 +134,14 @@ class ExoFactsController < UIViewController
     map.shows_user_location = true
     map.zoom_enabled = true
     map.scroll_enabled = true
+
+    all_regions.each do |region|
+      place = MKPointAnnotation.new
+      place.coordinate = region.center
+      place.title = region.identifier
+      map.addAnnotation(place)
+    end
+
     view.addSubview(map)
   end
 
