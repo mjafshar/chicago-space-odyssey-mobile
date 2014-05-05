@@ -86,6 +86,10 @@ class ExoFactsController < UIViewController
                 puts "Contains: #{location.identifier}, #{index}"
                 # general_alert("#{location.identifier} contains your coords")
                 location_id = index + 1
+
+                @defaults = NSUserDefaults.standardUserDefaults
+                @defaults["user_location"] = location_id
+
                 self.view.backgroundColor = UIColor.whiteColor
                 # systems_controller = SystemsController.alloc.initWithParams({location_id: location_id})
                     System.pull_system_data(location_id) do |system|

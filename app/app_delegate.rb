@@ -4,6 +4,10 @@ class AppDelegate
     @window.makeKeyAndVisible
 
     if Twitter::Composer.available?
+      puts "Twitter ID #{Twitter.accounts[0].user_id}"
+      @defaults = NSUserDefaults.standardUserDefaults
+      @defaults["twitter_id"] = Twitter.accounts[0].user_id
+      
       exo_facts_controller = ExoFactsController.alloc.initWithNibName(nil, bundle: nil)
       geo_cache_controller = GeoCachingController.alloc.initWithNibName(nil, bundle: nil)
       @visited_sites_controller = VisitedSitesController.alloc.initWithNibName(nil, bundle: nil)

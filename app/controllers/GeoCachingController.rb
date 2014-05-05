@@ -8,6 +8,10 @@ class GeoCachingController < UIViewController
     # @label.sizeToFit
     # @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
     # self.view.addSubview(@label)
+    @defaults = NSUserDefaults.standardUserDefaults
+    NSLog("========================================")
+    NSLog("The user location in GeoCachingController: #{@defaults['user_location']}")
+    NSLog("The user twitter id in GeoCachingController: #{@defaults['twitter_id']}")
 
 
     @customTextbox = UITextView.alloc.initWithFrame(self.view.bounds)
