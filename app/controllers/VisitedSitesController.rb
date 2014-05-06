@@ -39,7 +39,9 @@ class VisitedSitesController < UITableViewController
 
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    location_id = @defaults["user_location"]
+    location_name = @location_names[indexPath.row]
+    location = @visits.select{ |key, value| value == location_name }
+    location_id = location.keys.first.to_i
 
     systems_controller = SystemsController.alloc.initWithParams({location_id: location_id})
     self.navigationController.pushViewController(systems_controller, animated:true)
