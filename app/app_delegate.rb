@@ -1,7 +1,9 @@
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
+    application.setStatusBarStyle(UIStatusBarStyleLightContent)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     @window.makeKeyAndVisible
+
 
     if Twitter::Composer.available?
       Twitter.sign_in do |granted, ns_error|
@@ -22,7 +24,7 @@ class AppDelegate
           @window.rootViewController = tab_controller
         else
           label = UILabel.alloc.initWithFrame(CGRectZero)
-          @window.backgroundColor = UIColor.whiteColor
+          # @window.backgroundColor = UIColor.whiteColor
           label.text = "Please allow access to Twitter in settings"
           label.sizeToFit
           label.center = CGPointMake(@window.frame.size.width / 2, @window.frame.size.height / 2)
@@ -31,7 +33,7 @@ class AppDelegate
       end
     else
       label = UILabel.alloc.initWithFrame(CGRectZero)
-      @window.backgroundColor = UIColor.whiteColor
+      # @window.backgroundColor = UIColor.whiteColor
       label.text = "Login to Twitter in your settings!"
       label.sizeToFit
       label.center = CGPointMake(@window.frame.size.width / 2, @window.frame.size.height / 2)
