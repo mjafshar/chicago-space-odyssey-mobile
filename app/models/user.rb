@@ -12,8 +12,8 @@ class User
     }
   end
 
-  def visited_sites(user_id, &block)
-    BW::HTTP.get("http://tosche-station.herokuapp.com/users/#{user_id}/locations") do |response|
+  def self.visited_sites(payload, &block)
+    BW::HTTP.post("http://tosche-station.herokuapp.com/users/mobile", {payload: payload}) do |response|
       visits_data = BW::JSON.parse(response.body.to_str)
       block.call(visits_data)
     end

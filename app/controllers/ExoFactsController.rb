@@ -108,7 +108,6 @@ class ExoFactsController < UIViewController
                   scroll_view.contentSize = body.frame.size
                   self.view.addSubview(scroll_view)
                 end
-                register_user_and_location
               end
             end
             # self.view.backgroundColor = UIColor.whiteColor
@@ -250,16 +249,5 @@ class ExoFactsController < UIViewController
     alert.message = "#{message}"
     alert.show
   end
-
-  def register_user_and_location
-    data = {user_id: @defaults["twitter_id"], location_id: @defaults["user_location"]}
-    send_user_info_post_request(data)
-  end
-
-  def send_user_info_post_request(payload)
-    BW::HTTP.post("http://tosche-station.herokuapp.com/users/mobile", {payload: payload}) do |response|
-    end
-  end
-
 end
 

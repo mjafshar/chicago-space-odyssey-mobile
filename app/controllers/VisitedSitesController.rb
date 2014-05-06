@@ -8,9 +8,8 @@ class VisitedSitesController < UITableViewController
   def initWithNibName(name, bundle: bundle)
     super
     @defaults = NSUserDefaults.standardUserDefaults
-    @user_id = @defaults['twitter_id']
-    @user = User.new
-    @user.visited_sites(@user_id) do |visits|
+    data = {user_id: @defaults["twitter_id"], location_id: @defaults["user_location"]}
+    User.visited_sites(data) do |visits|
       @location_names = visits.values
       @visits = visits
     end
@@ -40,9 +39,7 @@ class VisitedSitesController < UITableViewController
 
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    location_name = @location_names[indexPath.row]
-    location = @visits.select{ |key, value| value == location_name }
-    location_id = location.keys.first.to_i
+    location_id = @defaults["user_location"]
 
     systems_controller = SystemsController.alloc.initWithParams({location_id: location_id})
     self.navigationController.pushViewController(systems_controller, animated:true)
