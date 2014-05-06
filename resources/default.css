@@ -81,6 +81,12 @@ text-label {
 	left: 75px;
 }
 
+#GeoCacheView text-view {
+	background-color: black;
+	opacity: .5;
+	color: white;
+}
+
 #SystemsView {
 	background-image: url(bg.png);
 	color: white;
