@@ -18,5 +18,6 @@ Motion::Project::App.setup do |app|
   app.name = 'tosche-station-mobile'
   app.frameworks += ['Social', 'Twitter']
   app.pixatefreestyle.framework = 'vendor/PixateFreestyle.framework'
+  app.info_plist['UIViewControllerBasedStatusBarAppearance'] = false
   app.interface_orientations = [:portrait]
 end
