@@ -23,12 +23,11 @@ class GeoCachingController < UIViewController
 
       keyboard_toolbar = UIView.alloc.initWithFrame(CGRectMake(10, 0, size.width, 40))
 
-      @composer_text_view = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [size.width, size.height - 10]])
+      @composer_text_view = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [size.width, 270]])
       @composer_text_view.inputAccessoryView = keyboard_toolbar
-      @composer_text_view.scrollEnabled = 'YES'
+      @composer_text_view.scrollEnabled = true
       @composer_text_view.text = "Type something"
       @composer_text_view.setFont(UIFont.fontWithName('Avenir Next', size:18))
-      @composer_text_view.textAlignment = UITextAlignmentCenter
 
       spacer = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil)
       cancel_btn = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemCancel, target:self, action:'cancel_message_composer')
