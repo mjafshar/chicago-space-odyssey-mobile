@@ -61,7 +61,7 @@ class ExoFactsController < UIViewController
           @location_manager.startMonitoringForRegion(@ferris_wheel_region, desiredAccuracy: 1.0)
           @location_manager.startMonitoringForRegion(@mill_park_region, desiredAccuracy: 1.0)
           @location_manager.startMonitoringForRegion(@merch_mart_region, desiredAccuracy: 1.0)
-          @location_manager.stopMonitoringForRegion(@dbc_region, desiredAccuracy: 1.0)
+          @location_manager.startMonitoringForRegion(@dbc_region, desiredAccuracy: 1.0)
           @location_manager.startMonitoringForRegion(@us_cell_region, desiredAccuracy: 1.0)
           @location_manager.startMonitoringForRegion(@wrigley_region, desiredAccuracy: 1.0)
           @location_manager.startMonitoringForRegion(@pile_region, desiredAccuracy: 1.0)
@@ -109,7 +109,6 @@ class ExoFactsController < UIViewController
                   self.view.addSubview(scroll_view)
                 end
                 register_user_and_location
-                
               end
             end
             # self.view.backgroundColor = UIColor.whiteColor
@@ -197,10 +196,10 @@ class ExoFactsController < UIViewController
 
   def locationManager(manager, didUpdateLocations:locations)
     NSLog("The locations coming through: #{locations.inspect}")
-   @latitude = locations.last.coordinate.latitude
-   @longitude = locations.last.coordinate.longitude
-   # @location_manager.stopUpdatingLocation
-   # @location_manager.startUpdatingLocation
+    @latitude = locations.last.coordinate.latitude
+    @longitude = locations.last.coordinate.longitude
+    # @location_manager.stopUpdatingLocation
+    # @location_manager.startUpdatingLocation
   end
 
   def locationManager(manager, didFailWithError:error)
@@ -258,7 +257,7 @@ class ExoFactsController < UIViewController
   end
 
   def send_user_info_post_request(payload)
-    BW::HTTP.post("http://192.168.0.90:3000/users/mobile", {payload: payload}) do |response|
+    BW::HTTP.post("http://tosche-station.herokuapp.com/users/mobile", {payload: payload}) do |response|
     end
   end
 

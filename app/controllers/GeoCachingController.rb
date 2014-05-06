@@ -26,7 +26,6 @@ class GeoCachingController < UIViewController
       @composer_text_view = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [size.width, 270]])
       @composer_text_view.inputAccessoryView = keyboard_toolbar
       @composer_text_view.scrollEnabled = true
-      @composer_text_view.text = "Type something"
       @composer_text_view.setFont(UIFont.fontWithName('Avenir Next', size:18))
 
       spacer = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil)
@@ -96,7 +95,7 @@ class GeoCachingController < UIViewController
 
   def send_messege(payload)
     # Have sending process in background, when phone is turned off or app is in background
-    BW::HTTP.post("http://192.168.0.106:3000/collections/create", {payload: payload}) do |response|
+    BW::HTTP.post("http://tosche-station.herokuapp.com/collections/create", {payload: payload}) do |response|
     end
   end
 end
