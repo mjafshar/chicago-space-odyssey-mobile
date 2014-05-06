@@ -111,7 +111,7 @@ class GeoCachingController < UIViewController
 
   def send_post_request(payload)
     # Have sending process in background, when phone is turned off or app is in background
-    BW::HTTP.post("http://192.168.0.90:3000/collections/create", {payload: payload}) do |response|
+    BW::HTTP.post("http://192.168.0.106:3000/collections/create", {payload: payload}) do |response|
     end
   end
 
