@@ -1,7 +1,8 @@
 class VisitedSitesController < UITableViewController
   def viewDidLoad
     super
-    self.view.backgroundColor = UIColor.whiteColor
+    view.styleId = 'VisitedView'
+    # self.view.backgroundColor = UIColor.whiteColor
     self.title = "Visits"
   end
 
