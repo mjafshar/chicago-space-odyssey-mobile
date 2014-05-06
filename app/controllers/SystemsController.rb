@@ -2,7 +2,8 @@ class SystemsController < UIViewController
   attr_accessor :location_id
   def viewDidLoad
     super
-    self.view.backgroundColor = UIColor.whiteColor
+    
+    view.styleId = 'SystemsView'
     id = self.location_id
 
     System.pull_system_data(id) do |system|
@@ -14,6 +15,7 @@ class SystemsController < UIViewController
       body = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [size.width, size.height]])
       body.text = system[:description]
       body.editable = false
+      body.styleClass = 'PlanetText'
       scroll_view = UIScrollView.alloc.initWithFrame(frame)
 
       scroll_view.showsVerticalScrollIndicator = true
