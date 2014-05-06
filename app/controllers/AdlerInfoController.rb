@@ -14,7 +14,9 @@ class AdlerInfoController < UIViewController
 
   def initWithNibName(name, bundle: bundle)
     super
-    self.tabBarItem = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemMore, tag: 4)
+    @adler = UIImage.imageNamed('planet')
+    self.tabBarItem = UITabBarItem.alloc.
+    initWithTitle('ADLER', image: @adler, tag: 4)
     self
   end
 end
