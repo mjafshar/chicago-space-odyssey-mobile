@@ -13,13 +13,13 @@ class GeoCachingController < UIViewController
 
       @data = {image: nil, text: nil, user_id: @defaults['twitter_id'], location_id: @defaults['user_location']}
 
-      compose_btn = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-      compose_btn.setTitle("Compose", forState: UIControlStateNormal)
-      compose_btn.setFont(UIFont.fontWithName('Avenir Next', size:18))
-      compose_btn.addTarget(self, action: 'show_message_composer', forControlEvents:UIControlEventTouchUpInside)
-      compose_btn.sizeToFit
-      compose_btn.center = CGPointMake(size.width / 2, size.height / 2)
-      self.view.addSubview(compose_btn)
+      @compose_btn = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+      @compose_btn.setTitle("Compose", forState: UIControlStateNormal)
+      @compose_btn.setFont(UIFont.fontWithName('Avenir Next', size:18))
+      @compose_btn.addTarget(self, action: 'show_message_composer', forControlEvents:UIControlEventTouchUpInside)
+      @compose_btn.sizeToFit
+      @compose_btn.center = CGPointMake(size.width / 2, size.height / 2)
+      self.view.addSubview(@compose_btn)
 
       keyboard_toolbar = UIView.alloc.initWithFrame(CGRectMake(10, 0, size.width, 40))
 
@@ -56,6 +56,7 @@ class GeoCachingController < UIViewController
 
   def show_message_composer
     self.view.addSubview(@composer_text_view)
+    @compose_btn.removeFromSuperview
     @composer_text_view.becomeFirstResponder
   end
 
@@ -66,6 +67,7 @@ class GeoCachingController < UIViewController
   def cancel_message_composer
     hide_message_composer
     @image_view = nil
+    self.view.addSubview(@compose_btn)
     # @composer_text_view.text = 'Type something'
   end
 
