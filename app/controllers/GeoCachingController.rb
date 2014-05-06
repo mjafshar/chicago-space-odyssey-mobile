@@ -11,7 +11,7 @@ class GeoCachingController < UIViewController
     if @defaults['user_location'] != nil
       self.title = "Geo Cache"
 
-      @data = {image: 'nil', text: 'nil', user_id: @defaults['twitter_id'], location_id: @defaults['user_location']}
+      @data = {image: nil, text: nil, user_id: @defaults['twitter_id'], location_id: @defaults['user_location']}
 
       compose_btn = UIButton.buttonWithType(UIButtonTypeRoundedRect)
       compose_btn.setTitle("Compose", forState: UIControlStateNormal)
@@ -65,8 +65,8 @@ class GeoCachingController < UIViewController
 
   def cancel_message_composer
     hide_message_composer
-    @image_view = 'nil'
-    @composer_text_view.text = 'Type something'
+    @image_view = nil
+    # @composer_text_view.text = 'Type something'
   end
 
   def take_picture
@@ -77,12 +77,12 @@ class GeoCachingController < UIViewController
   end
 
   def encode_image(image_view)
-    if image_view != 'nil'
+    if image_view != nil
       image = UIImage.UIImagePNGRepresentation(image_view.image)
       encodedImage = [image].pack('m0')
       return encodedImage
     else
-      return 'nil'
+      return nil
     end
   end
 
