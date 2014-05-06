@@ -1,56 +1,72 @@
 class GeoCachingController < UIViewController
   def viewDidLoad
     super
-
     @defaults = NSUserDefaults.standardUserDefaults
-    NSLog("========================================")
-    NSLog("The user location in GeoCachingController: #{@defaults['user_location']}")
-    NSLog("The user twitter id in GeoCachingController: #{@defaults['twitter_id']}")
-
     frame = UIScreen.mainScreen.applicationFrame
     origin = frame.origin
 
     self.view.backgroundColor = UIColor.whiteColor
+
     if @defaults['user_location'] != nil
       self.title = "Geo Cache"
 
-      compose_btn = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-      compose_btn.setTitle("Compose", forState: UIControlStateNormal)
-      compose_btn.addTarget(self, action: 'show_message_composer', forControlEvents:UIControlEventTouchUpInside)
-      compose_btn.sizeToFit
-      compose_btn.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
-      self.view.addSubview(compose_btn)
+    @data = {image: nil, text: nil, user_id: @defaults['twitter_id'], location_id: @defaults['user_location']}
 
-      submit_btn = UIButton.buttonWithType(UIButtonTypeCustom)
-      submit_btn.setTitle("Submit", forState: UIControlStateNormal)
-      submit_btn.setTitle("Sending", forState: UIControlStateHighlighted)
-      submit_btn.addTarget(self, action: 'submit', forControlEvents: UIControlEventTouchUpInside)
-      submit_btn.center = CGPointMake(250, 0)
-      submit_btn.sizeToFit
+    compose_btn = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+    compose_btn.setTitle("Compose", forState: UIControlStateNormal)
+    compose_btn.addTarget(self, action: 'show_message_composer', forControlEvents:UIControlEventTouchUpInside)
+    compose_btn.sizeToFit
+    compose_btn.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
+    self.view.addSubview(compose_btn)
 
-      picture_btn = UIButton.buttonWithType(UIButtonTypeCustom)
-      picture_btn.setTitle("Take A Pic", forState:UIControlStateNormal)
-      picture_btn.addTarget(self, action: 'take_picture', forControlEvents: UIControlEventTouchUpInside)
-      picture_btn.center = CGPointMake(10, 0)
-      picture_btn.sizeToFit
+    submit_btn = UIButton.buttonWithType(UIButtonTypeCustom)
+    submit_btn.setTitle("Submit", forState: UIControlStateNormal)
+    submit_btn.setTitle("Sending", forState: UIControlStateHighlighted)
+    submit_btn.addTarget(self, action: 'submit', forControlEvents: UIControlEventTouchUpInside)
+    submit_btn.center = CGPointMake(250, 0)
+    submit_btn.sizeToFit
 
-      toolbar = UIView.alloc.initWithFrame(CGRectMake(10, 0, 310, 40))
-      toolbar.backgroundColor = UIColor.lightGrayColor
+    picture_btn = UIButton.buttonWithType(UIButtonTypeCustom)
+    picture_btn.setTitle("Take A Pic", forState:UIControlStateNormal)
+    picture_btn.addTarget(self, action: 'take_picture', forControlEvents: UIControlEventTouchUpInside)
+    picture_btn.center = CGPointMake(125, 0)
+    picture_btn.sizeToFit
 
-      toolbar.addSubview(picture_btn)
-      toolbar.addSubview(submit_btn)
+    cancel_btn = UIButton.buttonWithType(UIButtonTypeCustom)
+    cancel_btn.setTitle("Cancel", forState:UIControlStateNormal)
+    cancel_btn.addTarget(self, action: 'hide_message_composer', forControlEvents: UIControlEventTouchUpInside)
+    cancel_btn.center = CGPointMake(10, 0)
+    cancel_btn.sizeToFit
 
-      @composer_text_view = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [self.view.frame.size.width, self.view.frame.size.height - 10]])
-      @composer_text_view.inputAccessoryView = toolbar
-      @composer_text_view.scrollEnabled = 'YES'
-      @composer_text_view.text = "Type something"
-      @composer_text_view.textAlignment = UITextAlignmentCenter
+    toolbar = UIView.alloc.initWithFrame(CGRectMake(10, 0, 310, 40))
+    toolbar.backgroundColor = UIColor.lightGrayColor
+
+    toolbar.addSubview(picture_btn)
+    toolbar.addSubview(submit_btn)
+    toolbar.addSubview(cancel_btn)
+
+    @composer_text_view = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [self.view.frame.size.width, self.view.frame.size.height - 10]])
+    @composer_text_view.inputAccessoryView = toolbar
+    @composer_text_view.scrollEnabled = 'YES'
+    @composer_text_view.text = "Type something"
+    @composer_text_view.textAlignment = UITextAlignmentCenter
+
+    @toolbar = UIToolbar.new
+    @toolbar.barStyle = UIBarStyleDefault
+    height = UIScreen.mainScreen.bounds.size.height
+    width = UIScreen.mainScreen.bounds.size.width
+    @toolbar.frame = CGRect.new [0, height - 32], [width, 32]
+
+    # Add standard button for enabling location tracking
+
+    @toolbar.setItems [cancel_btn, picture_btn, submit_btn]
+    view.addSubview @toolbar
     else
       @label = UILabel.alloc.initWithFrame(CGRectZero)
       self.title = "Out of Range"
       @label.text = 'Too far away from any systems'
       @label.sizeToFit
-      @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)      
+      @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
       self.view.addSubview(@label)
     end
   end
@@ -66,6 +82,8 @@ class GeoCachingController < UIViewController
 
   def hide_message_composer
     @composer_text_view.removeFromSuperview
+    @image_view = nil
+    @composer_text_view.text = 'Type something'
   end
 
   def initWithNibName(name, bundle: bundle)
@@ -99,27 +117,16 @@ class GeoCachingController < UIViewController
   end
 
   def submit
-    account = Twitter.accounts[0]
-    user_id = account.user_id
-    puts @composer_text_view.text
-    # textFieldShouldReturn(@composer_text_view)
-    data = {}
-    data = {image: encode_image(@image_view), text: @composer_text_view.text, user_id: user_id, location_id: @defaults['user_location']}
-    data[:text] ||= ''
-    data[:image] ||= ''
+    @data[:text] = @composer_text_view.text
+    @data[:image] = encode_image(@image_view)
     hide_message_composer
-    send_post_request(data)
-    @image_view = nil
-    @composer_text_view.text = 'Type something'
-    # view.removeSubview(@composer_text_view)
+    send_post_request(@data)
+
     # How to close view on submit
   end
-
-  # def take_picture
-  #   BW::Device.camera.any.picture(media_types: [:movie, :image]) do |result|
-  #     image_view = UIImageView.alloc.initWithImage(result[:original_image])
-  #   end
-  # end
 end
 
 # /locations/:id/collections
+#
+# Add cancel upload
+# Always show keyboard
