@@ -1,0 +1,93 @@
+#ExoView {
+	background-image: url(bg.png);
+	/*background-color: red;*/
+	color: white;
+	
+}
+
+navigation-bar {
+	background-color: black;
+	color: #59C6A7;
+}
+
+title {
+	font-family: 'Avenir Next';
+	font-size: 20px;
+	font-weight: 400;
+	color: white;
+}
+
+text-view {
+	background-color: none;
+	opacity: .75;
+}
+
+tab-bar {
+	background-color: black;
+	color: white;
+}
+
+table-view-cell {
+	color: white;
+}
+
+text-label {
+	color: white;
+	font-family: 'Avenir Next'
+}
+
+.PlanetText {
+	font-weight: 300;
+	color: white;
+	font-size: 14px;
+}
+
+.h1 {
+  font-size: 30pt;
+  height: 34;
+  font-family: 'Avenir Next';
+  font-weight: 300;
+  /*position: 75px;*/
+  color: white;
+  text-transform: uppercase;
+}
+
+.message {
+	color: white;
+	font-family: 'Avenir Next';
+	font-size: 16px;
+}
+
+/*text-view attributed-text {
+	opacity: 1;
+	color: white;
+
+}*/
+
+scroll-view {
+	background-color: none;
+/*	opacity: .7;*/
+	/*color: white*/
+}
+
+#AdlerView {
+	background-image: url(bg.png);
+	color: white;
+	/*background-color: linear-gradient(#000000, #f2f4f6);*/
+}
+#GeoCacheView {
+	background-image: url(bg.png);
+	color: white;
+	/*background-color: linear-gradient(#000000, #f2f4f6);*/
+}
+#SystemsView {
+	background-image: url(bg.png);
+	color: white;
+	/*background-color: linear-gradient(#000000, #f2f4f6);*/
+}
+#VisitedView {
+	/*background-image: url(bg.png);*/
+	color: white;
+	background-color: black;
+}
+
