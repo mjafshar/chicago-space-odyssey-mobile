@@ -10,7 +10,7 @@ class ExoFactsController < UIViewController
     @defaults["user_location"] = nil
     # check_location
     @add_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    @add_button.setTitle("Add", forState:UIControlStateNormal)
+    @add_button.setTitle("Coordinates", forState:UIControlStateNormal)
     @add_button.sizeToFit
     @add_button.frame = CGRect.new([10, 50], @add_button.frame.size)
     @add_button.addTarget(self, action:"display_lat_long", forControlEvents:UIControlEventTouchUpInside)
@@ -105,21 +105,21 @@ class ExoFactsController < UIViewController
                   frame = UIScreen.mainScreen.applicationFrame
                   origin = frame.origin
                   size = frame.size
-                  body = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [size.width, size.height]])
+                  body = UITextView.alloc.initWithFrame([[origin.x, origin.y + 100], [size.width, size.height]])
                   body.styleClass = 'PlanetText'
                   body.text = system[:description]
+                  body.backgroundColor = UIColor.clearColor
                   body.editable = false
-                  body.setFont(UIFont.fontWithName('Avenir Next', size:13))
-                  body.sizeToFit
+                  # body.sizeToFit
 
-                  body.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)-25)
-                  # scroll_view = UIScrollView.alloc.initWithFrame(frame)
-
-                  # scroll_view.showsVerticalScrollIndicator = true
-                  # scroll_view.scrollEnabled = true
-                  self.view.addSubview(body)
-                  # scroll_view.contentSize = body.frame.size
-                  # self.view.addSubview(scroll_view)
+                  # body.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)-25)
+                  scroll_view = UIScrollView.alloc.initWithFrame(frame)
+                  scroll_view.showsVerticalScrollIndicator = true
+                  scroll_view.scrollEnabled = true
+                  scroll_view.addSubview(body)
+                  scroll_view.backgroundColor = UIColor.clearColor
+                  scroll_view.contentSize = body.frame.size
+                  self.view.addSubview(scroll_view)
                 end
               end
             end
