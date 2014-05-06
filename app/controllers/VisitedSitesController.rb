@@ -7,10 +7,10 @@ class VisitedSitesController < UITableViewController
 
   def initWithNibName(name, bundle: bundle)
     super
-
+    @defaults = NSUserDefaults.standardUserDefaults
+    @user_id = @defaults['twitter_id']
     @user = User.new
-    user_id = 1
-    @user.visited_sites(user_id) do |visits|
+    @user.visited_sites(@user_id) do |visits|
       @location_names = visits.values
       @visits = visits
     end
