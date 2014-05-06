@@ -3,7 +3,8 @@ class ExoFactsController < UIViewController
 
   def viewDidLoad
     super
-
+    @defaults = NSUserDefaults.standardUserDefaults
+    @defaults["user_location"] = nil
     # check_location
     @add_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
     @add_button.setTitle("Add", forState:UIControlStateNormal)
@@ -60,7 +61,7 @@ class ExoFactsController < UIViewController
           @location_manager.startMonitoringForRegion(@ferris_wheel_region, desiredAccuracy: 1.0)
           @location_manager.startMonitoringForRegion(@mill_park_region, desiredAccuracy: 1.0)
           @location_manager.startMonitoringForRegion(@merch_mart_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(@dbc_region, desiredAccuracy: 1.0)
+          @location_manager.stopMonitoringForRegion(@dbc_region, desiredAccuracy: 1.0)
           @location_manager.startMonitoringForRegion(@us_cell_region, desiredAccuracy: 1.0)
           @location_manager.startMonitoringForRegion(@wrigley_region, desiredAccuracy: 1.0)
           @location_manager.startMonitoringForRegion(@pile_region, desiredAccuracy: 1.0)
@@ -85,7 +86,7 @@ class ExoFactsController < UIViewController
                 # general_alert("#{location.identifier} contains your coords")
                 location_id = index + 1
 
-                @defaults = NSUserDefaults.standardUserDefaults
+                # @defaults = NSUserDefaults.standardUserDefaults
                 @defaults["user_location"] = location_id
 
                 self.view.backgroundColor = UIColor.whiteColor
@@ -208,18 +209,19 @@ class ExoFactsController < UIViewController
 
   def locationManager(manager, didEnterRegion:region)
     # puts "Getting to did enter region"
-    alert = UIAlertView.new
-    alert.addButtonWithTitle("OK")
-    alert.message = "You have entered the region! Hooray!"
-    alert.show
+    # alert = UIAlertView.new
+    # alert.addButtonWithTitle("OK")
+    # alert.message = "You have entered the region! Hooray!"
+    # alert.show
 
   end
 
   def locationManager(manager, didExitRegion:region)
-    alert = UIAlertView.new
-    alert.addButtonWithTitle("OK")
-    alert.message = "You left! Come back!"
-    alert.show
+    # alert = UIAlertView.new
+    # alert.addButtonWithTitle("OK")
+    # alert.message = "You left! Come back!"
+    # alert.show
+    @defaults["user_location"] = nil
   end
 
   def locationManager(manager, monitoringDidFailForRegion:region, withError:error)

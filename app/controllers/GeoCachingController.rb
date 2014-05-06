@@ -11,39 +11,48 @@ class GeoCachingController < UIViewController
     origin = frame.origin
 
     self.view.backgroundColor = UIColor.whiteColor
-    self.title = "Geo Cache"
+    if @defaults['user_location'] != nil
+      self.title = "Geo Cache"
 
-    compose_btn = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    compose_btn.setTitle("Compose", forState: UIControlStateNormal)
-    compose_btn.addTarget(self, action: 'show_message_composer', forControlEvents:UIControlEventTouchUpInside)
-    compose_btn.sizeToFit
-    compose_btn.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
-    self.view.addSubview(compose_btn)
+      compose_btn = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+      compose_btn.setTitle("Compose", forState: UIControlStateNormal)
+      compose_btn.addTarget(self, action: 'show_message_composer', forControlEvents:UIControlEventTouchUpInside)
+      compose_btn.sizeToFit
+      compose_btn.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
+      self.view.addSubview(compose_btn)
 
-    submit_btn = UIButton.buttonWithType(UIButtonTypeCustom)
-    submit_btn.setTitle("Submit", forState: UIControlStateNormal)
-    submit_btn.setTitle("Sending", forState: UIControlStateHighlighted)
-    submit_btn.addTarget(self, action: 'submit', forControlEvents: UIControlEventTouchUpInside)
-    submit_btn.center = CGPointMake(250, 0)
-    submit_btn.sizeToFit
+      submit_btn = UIButton.buttonWithType(UIButtonTypeCustom)
+      submit_btn.setTitle("Submit", forState: UIControlStateNormal)
+      submit_btn.setTitle("Sending", forState: UIControlStateHighlighted)
+      submit_btn.addTarget(self, action: 'submit', forControlEvents: UIControlEventTouchUpInside)
+      submit_btn.center = CGPointMake(250, 0)
+      submit_btn.sizeToFit
 
-    picture_btn = UIButton.buttonWithType(UIButtonTypeCustom)
-    picture_btn.setTitle("Take A Pic", forState:UIControlStateNormal)
-    picture_btn.addTarget(self, action: 'take_picture', forControlEvents: UIControlEventTouchUpInside)
-    picture_btn.center = CGPointMake(10, 0)
-    picture_btn.sizeToFit
+      picture_btn = UIButton.buttonWithType(UIButtonTypeCustom)
+      picture_btn.setTitle("Take A Pic", forState:UIControlStateNormal)
+      picture_btn.addTarget(self, action: 'take_picture', forControlEvents: UIControlEventTouchUpInside)
+      picture_btn.center = CGPointMake(10, 0)
+      picture_btn.sizeToFit
 
-    toolbar = UIView.alloc.initWithFrame(CGRectMake(10, 0, 310, 40))
-    toolbar.backgroundColor = UIColor.lightGrayColor
+      toolbar = UIView.alloc.initWithFrame(CGRectMake(10, 0, 310, 40))
+      toolbar.backgroundColor = UIColor.lightGrayColor
 
-    toolbar.addSubview(picture_btn)
-    toolbar.addSubview(submit_btn)
+      toolbar.addSubview(picture_btn)
+      toolbar.addSubview(submit_btn)
 
-    @composer_text_view = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [self.view.frame.size.width, self.view.frame.size.height - 10]])
-    @composer_text_view.inputAccessoryView = toolbar
-    @composer_text_view.scrollEnabled = 'YES'
-    @composer_text_view.text = "Type something"
-    @composer_text_view.textAlignment = UITextAlignmentCenter
+      @composer_text_view = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [self.view.frame.size.width, self.view.frame.size.height - 10]])
+      @composer_text_view.inputAccessoryView = toolbar
+      @composer_text_view.scrollEnabled = 'YES'
+      @composer_text_view.text = "Type something"
+      @composer_text_view.textAlignment = UITextAlignmentCenter
+    else
+      @label = UILabel.alloc.initWithFrame(CGRectZero)
+      self.title = "Out of Range"
+      @label.text = 'Too far away from any systems'
+      @label.sizeToFit
+      @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)      
+      self.view.addSubview(@label)
+    end
   end
 
   def textFieldShouldReturn(textField)
