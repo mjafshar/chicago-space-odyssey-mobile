@@ -18,8 +18,8 @@ title {
 }
 
 text-view {
-	background-color: none;
-	opacity: .75;
+	/*background-color: none;*/
+	opacity: .8;
 }
 
 tab-bar {
@@ -37,9 +37,11 @@ text-label {
 }
 
 .PlanetText {
-	font-weight: 300;
+	font-family: 'Avenir Next';
+	font-weight: 400;
+	font-size: 16px;
 	color: white;
-	font-size: 14px;
+	/*font-size: 14px;*/
 }
 
 .h1 {
@@ -58,17 +60,6 @@ text-label {
 	font-size: 16px;
 }
 
-/*text-view attributed-text {
-	opacity: 1;
-	color: white;
-
-}*/
-
-scroll-view {
-	background-color: none;
-/*	opacity: .7;*/
-	/*color: white*/
-}
 
 #AdlerView {
 	background-image: url(bg.png);
@@ -80,6 +71,16 @@ scroll-view {
 	color: white;
 	/*background-color: linear-gradient(#000000, #f2f4f6);*/
 }
+
+#GeoCacheView button {
+	background-color: black;
+	color: white;
+	opacity: .5;
+	width: 150px;
+	height: 40px;
+	left: 75px;
+}
+
 #SystemsView {
 	background-image: url(bg.png);
 	color: white;
