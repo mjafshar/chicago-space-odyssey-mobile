@@ -9,7 +9,6 @@ class GeoCachingController < UIViewController
     size = frame.size
 
     if @defaults['user_location'] != nil
-      self.title = "Geo Cache"
 
       @data = {image: nil, text: nil, user_id: @defaults['twitter_id'], location_id: @defaults['user_location']}
 
@@ -35,7 +34,6 @@ class GeoCachingController < UIViewController
       @action_call.backgroundColor = UIColor.clearColor
       @action_call.text = "Tell us what you were doing #{system_distance} years ago."
       @action_call.editable = false
-      # @action_call.center = CGPointMake(size.width / 2, size.height - 120)
       @action_call.styleId = 'ActionCallLabel'
       self.view.addSubview(@action_call)
 
@@ -44,7 +42,6 @@ class GeoCachingController < UIViewController
       @compose_btn.setTitle("Compose", forState: UIControlStateNormal)
       @compose_btn.setFont(UIFont.fontWithName('Avenir Next', size:22))
       @compose_btn.addTarget(self, action: 'show_message_composer', forControlEvents:UIControlEventTouchUpInside)
-      # @compose_btn.sizeToFit
       @compose_btn.center = CGPointMake(20, size.height - 120)
       self.view.addSubview(@compose_btn)
 
@@ -109,7 +106,6 @@ class GeoCachingController < UIViewController
     self.view.addSubview(@action_call)
     self.view.addSubview(@planetTitle)
     self.view.addSubview(@compose_btn)
-    # @compose_btn.becomeFirstResponder
   end
 
   def take_picture
