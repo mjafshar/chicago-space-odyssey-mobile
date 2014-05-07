@@ -15,7 +15,7 @@ end
 
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
-  app.name = 'tosche-station-mobile'
+  app.name = 'CSO'
   app.frameworks += ['Social', 'Twitter']
   app.pixatefreestyle.framework = 'vendor/PixateFreestyle.framework'
   app.info_plist['UIViewControllerBasedStatusBarAppearance'] = false
