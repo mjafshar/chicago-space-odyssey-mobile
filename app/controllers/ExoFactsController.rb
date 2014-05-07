@@ -5,7 +5,7 @@ class ExoFactsController < UIViewController
     super
     view.styleId = 'ExoView'
     self.title = "Discover"
-    
+
     @defaults = NSUserDefaults.standardUserDefaults
     @defaults["user_location"] = nil
 
@@ -38,13 +38,13 @@ class ExoFactsController < UIViewController
           end
 
           if @regionStateArray.first != nil
-            
+
             @all_regions.each_with_index do |location, index|
               if location.containsCoordinate(@user_coords)
                 @location_id = index + 1
 
                 @defaults["user_location"] = @location_id
-              
+
                 populate_view_with_data
 
                 @view_map_button = UIBarButtonItem.alloc.initWithTitle("View Map", style: UIBarButtonItemStyleBordered, target:self, action:'createMap')
@@ -113,6 +113,10 @@ class ExoFactsController < UIViewController
 
   def populate_view_with_data
     System.pull_system_data(@location_id) do |system|
+
+      @defaults["system_name"] = system[:name]
+      @defaults["system_distance"] = system[:distance]
+      @defaults["system_description"] = system[:description]
 
       @planetTitle = UILabel.alloc.initWithFrame(CGRectZero)
       @planetTitle.styleClass = 'h1'
