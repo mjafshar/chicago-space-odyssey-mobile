@@ -15,29 +15,19 @@ class ExoFactsController < UIViewController
 
       if (CLLocationManager.authorizationStatus == KCLAuthorizationStatusAuthorized)
         @location_manager = set_location_manager
-        puts "We have location enabled!"
 
 
         if CLLocationManager.significantLocationChangeMonitoringAvailable
           @location_manager.startMonitoringSignificantLocationChanges
-          puts "We're hopefully monitoring changes!'"
         else
           NSLog("Significant location change service not available.")
         end
 
         if CLLocationManager.regionMonitoringAvailable
-          @location_manager.startMonitoringForRegion(@adler_planetarium_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(@soldier_field_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(@ferris_wheel_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(@mill_park_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(@merch_mart_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(@dbc_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(@us_cell_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(@wrigley_region, desiredAccuracy: 1.0)
-          @location_manager.startMonitoringForRegion(@pile_region, desiredAccuracy: 1.0)
+          @all_regions.each do |region|
+            @location_manager.startMonitoringForRegion(region, desiredAccuracy: 1.0)
+          end
 
-
-          NSLog("The location manager: #{@location_manager.inspect}")
           @user_coords = @location_manager.location.coordinate
           @regionStateArray = []
 
