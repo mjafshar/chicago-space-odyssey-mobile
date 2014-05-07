@@ -5,7 +5,7 @@ window {
 #ExoView {
 	background-image: url(bg.png);
 	color: white;
-	
+
 }
 
 navigation-bar {
@@ -70,9 +70,8 @@ text-label {
 	background-color: black;
 	color: white;
 	opacity: .5;
-	width: 150px;
-	height: 40px;
-	left: 75px;
+	width: 320px;
+	height: 60px;
 }
 
 toolbar {
@@ -85,8 +84,15 @@ bar-button-item {
 }
 
 #GeoCacheView text-view {
-	background-color: black;
 	opacity: .5;
+	color: white;
+}
+
+.GeoText {
+	font-family: 'Avenir Next';
+	font-weight: 400;
+	font-size: 20px;
+	text-align: center;
 	color: white;
 }
 

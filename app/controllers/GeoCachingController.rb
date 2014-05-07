@@ -13,17 +13,25 @@ class GeoCachingController < UIViewController
 
       @data = {image: nil, text: nil, user_id: @defaults['twitter_id'], location_id: @defaults['user_location']}
 
+      @body = UITextView.alloc.initWithFrame([[origin.x * 2, origin.y + 40], [size.width, 270]])
+      @body.backgroundColor = UIColor.clearColor
+      @body.text = 'The text here will describe what this view if for and prompt the user to interact with our service.'
+      @body.editable = false
+      @body.styleClass = 'GeoText'
+      self.view.addSubview(@body)
+
       @compose_btn = UIButton.buttonWithType(UIButtonTypeRoundedRect)
       @compose_btn.setTitle("Compose", forState: UIControlStateNormal)
       @compose_btn.setFont(UIFont.fontWithName('Avenir Next', size:18))
       @compose_btn.addTarget(self, action: 'show_message_composer', forControlEvents:UIControlEventTouchUpInside)
       @compose_btn.sizeToFit
-      @compose_btn.center = CGPointMake(size.width / 2, size.height / 2)
+      @compose_btn.center = CGPointMake(40, size.height - 70)
       self.view.addSubview(@compose_btn)
 
       keyboard_toolbar = UIView.alloc.initWithFrame(CGRectMake(10, 0, size.width, 40))
 
       @composer_text_view = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [size.width, 270]])
+      @composer_text_view.backgroundColor = UIColor.blackColor
       @composer_text_view.inputAccessoryView = keyboard_toolbar
       @composer_text_view.scrollEnabled = true
       @composer_text_view.setFont(UIFont.fontWithName('Avenir Next', size:18))
@@ -63,6 +71,7 @@ class GeoCachingController < UIViewController
   def show_message_composer
     self.view.addSubview(@composer_text_view)
     @compose_btn.removeFromSuperview
+    @body.removeFromSuperview
     @composer_text_view.becomeFirstResponder
   end
 
@@ -75,6 +84,7 @@ class GeoCachingController < UIViewController
     @image_view = nil
     @composer_text_view.text = ''
     self.view.addSubview(@compose_btn)
+    self.view.addSubview(@body)
   end
 
   def take_picture
