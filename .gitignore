@@ -17,3 +17,4 @@ nbproject
 .dat*.*
 vendor/twapi/build-iPhoneOS/*.*
 vendor/twapi/build-iPhoneSimulator/*.*
+vendor/PixateFreestyle.framework/build-iPhoneOS/*.*
