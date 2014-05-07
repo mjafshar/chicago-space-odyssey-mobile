@@ -81,6 +81,15 @@ text-label {
 	left: 75px;
 }
 
+toolbar {
+	background-color: black;
+}
+
+bar-button-item {
+	color: white;
+	-ios-tint-color: white;
+}
+
 #GeoCacheView text-view {
 	background-color: black;
 	opacity: .5;
