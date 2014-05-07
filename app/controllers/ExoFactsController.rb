@@ -16,7 +16,6 @@ class ExoFactsController < UIViewController
       if (CLLocationManager.authorizationStatus == KCLAuthorizationStatusAuthorized)
         @location_manager = set_location_manager
 
-
         if CLLocationManager.significantLocationChangeMonitoringAvailable
           @location_manager.startMonitoringSignificantLocationChanges
         else
@@ -41,16 +40,15 @@ class ExoFactsController < UIViewController
           if @regionStateArray.first != nil
             
             @all_regions.each_with_index do |location, index|
-              puts location.identifier
               if location.containsCoordinate(@user_coords)
-                puts "Contains: #{location.identifier}, #{index}"
                 location_id = index + 1
 
                 @defaults["user_location"] = location_id
               
-                populate_view_with_data
+                populate_view_with_data(location_id)
               end
             end
+
           elsif @regionStateArray.first == nil
             @black_bar = UIView.alloc.initWithFrame(CGRectMake(0, 0, self.view.frame.size.width, 20))
             @black_bar.backgroundColor = UIColor.blackColor
@@ -107,7 +105,7 @@ class ExoFactsController < UIViewController
     return nD * 1000
   end
 
-  def populate_view_with_data
+  def populate_view_with_data(location_id)
     System.pull_system_data(location_id) do |system|
 
       @planetTitle = UILabel.alloc.initWithFrame(CGRectZero)
@@ -155,26 +153,9 @@ class ExoFactsController < UIViewController
     view.addSubview(map)
   end
 
-  # def check_location
-  #   if (CLLocationManager.locationServicesEnabled)
-  #     @location_manager = CLLocationManager.alloc.init
-  #     @location_manager.desiredAccuracy = 1.0
-  #     @location_manager.distanceFilter = 5
-  #     @location_manager.delegate = self
-  #     @location_manager.pausesLocationUpdatesAutomatically = false
-  #     @location_manager.activityType = CLActivityTypeFitness
-  #     @location_manager.startUpdatingLocation
-  #   else
-  #    show_error_message(' Enable the Location Services for this app in Settings.')
-  #   end
-  # end
-
   def locationManager(manager, didUpdateLocations:locations)
-    NSLog("The locations coming through: #{locations.inspect}")
     @latitude = locations.last.coordinate.latitude
     @longitude = locations.last.coordinate.longitude
-    # @location_manager.stopUpdatingLocation
-    # @location_manager.startUpdatingLocation
   end
 
   def locationManager(manager, didFailWithError:error)
@@ -182,41 +163,22 @@ class ExoFactsController < UIViewController
   end
 
   def locationManager(manager, didEnterRegion:region)
-    # puts "Getting to did enter region"
-    # alert = UIAlertView.new
-    # alert.addButtonWithTitle("OK")
-    # alert.message = "You have entered the region! Hooray!"
-    # alert.show
-
   end
 
   def locationManager(manager, didExitRegion:region)
-    # alert = UIAlertView.new
-    # alert.addButtonWithTitle("OK")
-    # alert.message = "You left! Come back!"
-    # alert.show
     @defaults["user_location"] = nil
   end
 
   def locationManager(manager, monitoringDidFailForRegion:region, withError:error)
-    alert = UIAlertView.new
-    alert.addButtonWithTitle("OK")
-    alert.message = error
-    alert.show
+    general_alert(error)
   end
 
   def show_error_message(message)
-    alert = UIAlertView.new
-    alert.addButtonWithTitle("OK")
-    alert.message = message
-    alert.show
+    general_alert(message)
   end
 
   def display_lat_long
-    alert = UIAlertView.new
-    alert.addButtonWithTitle("OK")
-    alert.message = "Lat: #{@latitude}, Long: #{@longitude}"
-    alert.show
+    general_alert("Lat: #{@latitude}, Long: #{@longitude}")
   end
 
   def general_alert(message)
