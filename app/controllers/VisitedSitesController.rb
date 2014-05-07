@@ -3,7 +3,7 @@ class VisitedSitesController < UITableViewController
     super
     view.styleId = 'VisitedView'
     # self.view.backgroundColor = UIColor.whiteColor
-    self.title = "Visits"
+    self.title = "Explored"
   end
 
   def initWithNibName(name, bundle: bundle)
@@ -15,7 +15,10 @@ class VisitedSitesController < UITableViewController
       @visits = visits
     end
 
-    self.tabBarItem = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemHistory, tag: 3)
+    @rocket = UIImage.imageNamed('rocket.png')
+    @rocketSel = UIImage.imageNamed('rocket-select.png')
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle('Explored', image: @rocket, tag: 3)
+    self.tabBarItem.setFinishedSelectedImage(@rocketSel, withFinishedUnselectedImage:@rocket)
     self
   end
 
