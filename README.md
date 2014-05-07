@@ -1,6 +1,5 @@
-Chicago Space Odyssey (web)
+Chicago Space Odyssey (mobile)
 ==================
-[![Build Status](https://travis-ci.org/michaelanthonymain/chicago-space-odyssey-web.svg?branch=master)](https://travis-ci.org/michaelanthonymain/chicago-space-odyssey-web) [![Coverage Status](https://coveralls.io/repos/michaelanthonymain/chicago-space-odyssey-web/badge.png)](https://coveralls.io/r/michaelanthonymain/chicago-space-odyssey-web)
 
 ### The Team
 ==================
