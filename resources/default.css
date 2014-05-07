@@ -70,7 +70,7 @@ text-label {
 	background-color: black;
 	color: white;
 	opacity: .5;
-	width: 320px;
+	width: 280px;
 	height: 60px;
 }
 
@@ -83,17 +83,21 @@ bar-button-item {
 	-ios-tint-color: white;
 }
 
-#GeoCacheView text-view {
-	opacity: .5;
-	color: white;
-}
-
-.GeoText {
+#GeoBody {
 	font-family: 'Avenir Next';
 	font-weight: 400;
 	font-size: 20px;
+	opacity: .5;
 	text-align: center;
 	color: white;
+}
+
+#ActionCallLabel {
+	font-family: 'Avenir Next';
+	font-weight: 400;
+	font-size: 16px;
+	text-align: center;
+	color: #59C6A7;
 }
 
 #SystemsView {

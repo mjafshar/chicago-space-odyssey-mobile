@@ -13,19 +13,39 @@ class GeoCachingController < UIViewController
 
       @data = {image: nil, text: nil, user_id: @defaults['twitter_id'], location_id: @defaults['user_location']}
 
-      @body = UITextView.alloc.initWithFrame([[origin.x * 2, origin.y + 40], [size.width, 270]])
+      system_name = @defaults["system_name"]
+      system_distance = @defaults["system_distance"]
+      system_description = @defaults["system_description"]
+
+      @planetTitle = UILabel.alloc.initWithFrame(CGRectZero)
+      @planetTitle.styleClass = 'h1'
+      @planetTitle.text = system_name
+      @planetTitle.sizeToFit
+      @planetTitle.center = CGPointMake(self.view.frame.size.width / 2, 90)
+      self.view.addSubview(@planetTitle)
+
+      @body = UITextView.alloc.initWithFrame([[origin.x, origin.y + 100], [size.width, size.height]])
       @body.backgroundColor = UIColor.clearColor
-      @body.text = 'The text here will describe what this view if for and prompt the user to interact with our service.'
+      @body.text = "#{system_name} is #{system_distance} light years from our solar system. That means the light from #{system_name} that we observe is #{system_distance} years old."
       @body.editable = false
-      @body.styleClass = 'GeoText'
+      @body.styleId = 'GeoBody'
       self.view.addSubview(@body)
+
+      @action_call = UITextView.alloc.initWithFrame([[origin.x, origin.y + 370], [size.width, size.height]])
+      @action_call.backgroundColor = UIColor.clearColor
+      @action_call.text = "Tell us what you were doing #{system_distance} years ago."
+      @action_call.editable = false
+      # @action_call.center = CGPointMake(size.width / 2, size.height - 120)
+      @action_call.styleId = 'ActionCallLabel'
+      self.view.addSubview(@action_call)
+
 
       @compose_btn = UIButton.buttonWithType(UIButtonTypeRoundedRect)
       @compose_btn.setTitle("Compose", forState: UIControlStateNormal)
-      @compose_btn.setFont(UIFont.fontWithName('Avenir Next', size:18))
+      @compose_btn.setFont(UIFont.fontWithName('Avenir Next', size:22))
       @compose_btn.addTarget(self, action: 'show_message_composer', forControlEvents:UIControlEventTouchUpInside)
-      @compose_btn.sizeToFit
-      @compose_btn.center = CGPointMake(40, size.height - 70)
+      # @compose_btn.sizeToFit
+      @compose_btn.center = CGPointMake(20, size.height - 120)
       self.view.addSubview(@compose_btn)
 
       keyboard_toolbar = UIView.alloc.initWithFrame(CGRectMake(10, 0, size.width, 40))
@@ -48,7 +68,7 @@ class GeoCachingController < UIViewController
 
     else
       @label = UILabel.alloc.initWithFrame(CGRectZero)
-      self.title = "Out of Range"
+
       @label.text = 'Too far away from any systems'
       @label.sizeToFit
 
@@ -63,7 +83,7 @@ class GeoCachingController < UIViewController
     super
     @write = UIImage.imageNamed('write.png')
     @writeSel = UIImage.imageNamed('write-select.png')
-    self.tabBarItem = UITabBarItem.alloc.initWithTitle('Geo Cache', image: @write, tag: 2)
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle('Share', image: @write, tag: 2)
     self.tabBarItem.setFinishedSelectedImage(@writeSel, withFinishedUnselectedImage:@write)
     self
   end
@@ -72,6 +92,8 @@ class GeoCachingController < UIViewController
     self.view.addSubview(@composer_text_view)
     @compose_btn.removeFromSuperview
     @body.removeFromSuperview
+    @action_call.removeFromSuperview
+    @planetTitle.removeFromSuperview
     @composer_text_view.becomeFirstResponder
   end
 
@@ -83,8 +105,11 @@ class GeoCachingController < UIViewController
     hide_message_composer
     @image_view = nil
     @composer_text_view.text = ''
-    self.view.addSubview(@compose_btn)
     self.view.addSubview(@body)
+    self.view.addSubview(@action_call)
+    self.view.addSubview(@planetTitle)
+    self.view.addSubview(@compose_btn)
+    # @compose_btn.becomeFirstResponder
   end
 
   def take_picture
