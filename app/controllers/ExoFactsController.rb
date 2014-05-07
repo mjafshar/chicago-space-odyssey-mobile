@@ -41,11 +41,17 @@ class ExoFactsController < UIViewController
             
             @all_regions.each_with_index do |location, index|
               if location.containsCoordinate(@user_coords)
-                location_id = index + 1
+                @location_id = index + 1
 
-                @defaults["user_location"] = location_id
+                @defaults["user_location"] = @location_id
               
-                populate_view_with_data(location_id)
+                populate_view_with_data
+
+                @view_map_button = UIBarButtonItem.alloc.initWithTitle("View Map", style: UIBarButtonItemStyleBordered, target:self, action:'createMap')
+                self.navigationItem.rightBarButtonItem = @view_map_button
+
+                @exo_facts_button = UIBarButtonItem.alloc.initWithTitle("Facts", style: UIBarButtonItemStyleBordered, target:self, action:'back_to_facts')
+                self.navigationItem.leftBarButtonItem = @exo_facts_button
               end
             end
 
@@ -53,7 +59,7 @@ class ExoFactsController < UIViewController
             @black_bar = UIView.alloc.initWithFrame(CGRectMake(0, 0, self.view.frame.size.width, 20))
             @black_bar.backgroundColor = UIColor.blackColor
             self.view.addSubview(@black_bar)
-            createMap(@all_regions)
+            createMap
             self.view.bringSubviewToFront(@black_bar)
           end
 
@@ -105,8 +111,8 @@ class ExoFactsController < UIViewController
     return nD * 1000
   end
 
-  def populate_view_with_data(location_id)
-    System.pull_system_data(location_id) do |system|
+  def populate_view_with_data
+    System.pull_system_data(@location_id) do |system|
 
       @planetTitle = UILabel.alloc.initWithFrame(CGRectZero)
       @planetTitle.styleClass = 'h1'
@@ -134,23 +140,28 @@ class ExoFactsController < UIViewController
     end
   end
 
-  def createMap(all_regions)
-    map = MapView.new
-    map.frame = self.view.frame
-    map.delegate = self
-    map.region = CoordinateRegion.new([41.8337329, -87.7321555], [1, 1])
-    map.shows_user_location = true
-    map.zoom_enabled = true
-    map.scroll_enabled = true
+  def back_to_facts
+    @map.removeFromSuperview()
+    populate_view_with_data
+  end
 
-    all_regions.each do |region|
+  def createMap
+    @map = MapView.new
+    @map.frame = self.view.frame
+    @map.delegate = self
+    @map.region = CoordinateRegion.new([41.8337329, -87.7321555], [1, 1])
+    @map.shows_user_location = true
+    @map.zoom_enabled = true
+    @map.scroll_enabled = true
+
+    @all_regions.each do |region|
       place = MKPointAnnotation.new
       place.coordinate = region.center
       place.title = region.identifier
-      map.addAnnotation(place)
+      @map.addAnnotation(place)
     end
 
-    view.addSubview(map)
+    view.addSubview(@map)
   end
 
   def locationManager(manager, didUpdateLocations:locations)

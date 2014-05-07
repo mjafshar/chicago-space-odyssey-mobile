@@ -12,7 +12,8 @@ class AppDelegate
           @defaults = NSUserDefaults.standardUserDefaults
           @defaults["twitter_id"] = Twitter.accounts[0].user_id
           
-          exo_facts_controller = ExoFactsController.alloc.initWithNibName(nil, bundle: nil)
+          exo_facts_tab_controller = ExoFactsController.alloc.initWithNibName(nil, bundle: nil)
+          exo_facts_controller = UINavigationController.alloc.initWithRootViewController(exo_facts_tab_controller)
           geo_cache_controller = GeoCachingController.alloc.initWithNibName(nil, bundle: nil)
           @visited_sites_controller = VisitedSitesController.alloc.initWithNibName(nil, bundle: nil)
           @visited_nav_controller = UINavigationController.alloc.initWithRootViewController(@visited_sites_controller)
