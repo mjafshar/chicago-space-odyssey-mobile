@@ -118,11 +118,19 @@ class ExoFactsController < UIViewController
       @defaults["system_distance"] = system[:distance]
       @defaults["system_description"] = system[:description]
 
+      @achievement_label = UILabel.alloc.initWithFrame(CGRectZero)
+      @achievement_label.styleClass = 'h2'
+      @achievement_label.text = "You are visiting"
+      @achievement_label.sizeToFit
+      @achievement_label.center = CGPointMake(self.view.frame.size.width / 2, 90)
+      @achievement_label.styleClass = 'visit_achievement'
+      self.view.addSubview(@achievement_label)
+
       @planetTitle = UILabel.alloc.initWithFrame(CGRectZero)
       @planetTitle.styleClass = 'h1'
       @planetTitle.text = system[:name]
       @planetTitle.sizeToFit
-      @planetTitle.center = CGPointMake(self.view.frame.size.width / 2, 90)
+      @planetTitle.center = CGPointMake(self.view.frame.size.width / 2, 125)
       self.view.addSubview(@planetTitle)
 
       frame = UIScreen.mainScreen.applicationFrame
