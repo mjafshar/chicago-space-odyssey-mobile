@@ -46,12 +46,15 @@ class ExoFactsController < UIViewController
                 @defaults["user_location"] = location_id
               
                 populate_view_with_data(location_id)
-                @view_map_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-                @view_map_button.setTitle("View Map", forState:UIControlStateNormal)
-                @view_map_button.sizeToFit
-                @view_map_button.frame = CGRect.new([10, 50], @view_map_button.frame.size)
-                @view_map_button.addTarget(self, action:"createMap", forControlEvents:UIControlEventTouchUpInside)
-                self.view.addSubview(@view_map_button)
+
+                @view_map_button = UIBarButtonItem.alloc.initWithTitle("View Map", style: UIBarButtonItemStyleBordered, target:self, action:'createMap')
+                self.navigationItem.rightBarButtonItem = @view_map_button
+                # @view_map_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+                # @view_map_button.setTitle("View Map", forState:UIControlStateNormal)
+                # @view_map_button.sizeToFit
+                # @view_map_button.frame = CGRect.new([10, 50], @view_map_button.frame.size)
+                # @view_map_button.addTarget(self, action:"createMap", forControlEvents:UIControlEventTouchUpInside)
+                # self.view.addSubview(@view_map_button)
 
               end
             end
