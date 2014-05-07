@@ -3,42 +3,19 @@ class ExoFactsController < UIViewController
 
   def viewDidLoad
     super
-    # @planet = UIImage.imageNamed('planet@2x.png')
-    # self.tabBarItem = UITabBarItem.alloc.initWithTitle("Exo Systems", image:@planet, tag:1)
     view.styleId = 'ExoView'
     self.title = "Discover"
     
     @defaults = NSUserDefaults.standardUserDefaults
     @defaults["user_location"] = nil
-    # check_location
+
     @add_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
     @add_button.setTitle("Coordinates", forState:UIControlStateNormal)
     @add_button.sizeToFit
     @add_button.frame = CGRect.new([10, 50], @add_button.frame.size)
     @add_button.addTarget(self, action:"display_lat_long", forControlEvents:UIControlEventTouchUpInside)
-    # self.view.addSubview(@add_button)
 
-    @adler_planetarium = CLLocationCoordinate2D.new(41.866333, -87.606783)
-    @soldier_field = CLLocationCoordinate2D.new(41.862074, -87.616804)
-    @ferris_wheel = CLLocationCoordinate2D.new(41.891712, -87.607244)
-    @mill_park = CLLocationCoordinate2D.new(41.882672, -87.623340)
-    @merch_mart = CLLocationCoordinate2D.new(41.888477, -87.635407)
-    @dbc = CLLocationCoordinate2D.new(41.889911, -87.637657)
-    @us_cell = CLLocationCoordinate2D.new(41.830273, -87.633348)
-    @wrigley = CLLocationCoordinate2D.new(41.947854, -87.655642)
-    @pile = CLLocationCoordinate2D.new(41.792015, -87.599959)
-
-    @adler_planetarium_region = CLCircularRegion.alloc.initWithCenter(@adler_planetarium, radius: 100, identifier:"Adler Planetarium")
-    @soldier_field_region = CLCircularRegion.alloc.initWithCenter(@soldier_field, radius: 100, identifier:"Soldier Field")
-    @ferris_wheel_region = CLCircularRegion.alloc.initWithCenter(@ferris_wheel, radius: 100, identifier:"Navy Pier Ferris Wheel")
-    @mill_park_region = CLCircularRegion.alloc.initWithCenter(@mill_park, radius: 100, identifier:"Millenium Park")
-    @merch_mart_region = CLCircularRegion.alloc.initWithCenter(@merch_mart, radius: 100, identifier:"Merchandise Mart")
-    @dbc_region = CLCircularRegion.alloc.initWithCenter(@dbc, radius: 100, identifier:"Dev Bootcamp")
-    @us_cell_region = CLCircularRegion.alloc.initWithCenter(@us_cell, radius: 100, identifier:"US Cellular Field")
-    @wrigley_region = CLCircularRegion.alloc.initWithCenter(@wrigley, radius: 100, identifier:"Wrigley Field")
-    @pile_region = CLCircularRegion.alloc.initWithCenter(@pile, radius: 100, identifier:"Chicago Pile-1")
-
-    @all_regions = [@adler_planetarium_region, @soldier_field_region, @ferris_wheel_region, @mill_park_region, @merch_mart_region, @dbc_region, @us_cell_region, @wrigley_region, @pile_region]
+    @all_regions = Location.all_regions
 
     if CLLocationManager.locationServicesEnabled
 
@@ -91,7 +68,6 @@ class ExoFactsController < UIViewController
                 puts "Contains: #{location.identifier}, #{index}"
                 location_id = index + 1
 
-                # @defaults = NSUserDefaults.standardUserDefaults
                 @defaults["user_location"] = location_id
 
               
@@ -112,9 +88,7 @@ class ExoFactsController < UIViewController
                   body.text = system[:description]
                   body.backgroundColor = UIColor.clearColor
                   body.editable = false
-                  # body.sizeToFit
 
-                  # body.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)-25)
                   scroll_view = UIScrollView.alloc.initWithFrame(frame)
                   scroll_view.showsVerticalScrollIndicator = true
                   scroll_view.scrollEnabled = true
