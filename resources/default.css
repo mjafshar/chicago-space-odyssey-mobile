@@ -1,3 +1,7 @@
+window {
+	color: white;
+}
+
 #ExoView {
 	background-image: url(bg.png);
 	color: white;
