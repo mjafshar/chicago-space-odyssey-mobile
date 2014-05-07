@@ -46,6 +46,13 @@ class ExoFactsController < UIViewController
                 @defaults["user_location"] = location_id
               
                 populate_view_with_data(location_id)
+                @view_map_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+                @view_map_button.setTitle("View Map", forState:UIControlStateNormal)
+                @view_map_button.sizeToFit
+                @view_map_button.frame = CGRect.new([10, 50], @view_map_button.frame.size)
+                @view_map_button.addTarget(self, action:"createMap", forControlEvents:UIControlEventTouchUpInside)
+                self.view.addSubview(@view_map_button)
+
               end
             end
 
@@ -53,7 +60,7 @@ class ExoFactsController < UIViewController
             @black_bar = UIView.alloc.initWithFrame(CGRectMake(0, 0, self.view.frame.size.width, 20))
             @black_bar.backgroundColor = UIColor.blackColor
             self.view.addSubview(@black_bar)
-            createMap(@all_regions)
+            createMap
             self.view.bringSubviewToFront(@black_bar)
           end
 
@@ -134,7 +141,7 @@ class ExoFactsController < UIViewController
     end
   end
 
-  def createMap(all_regions)
+  def createMap
     map = MapView.new
     map.frame = self.view.frame
     map.delegate = self
@@ -143,7 +150,7 @@ class ExoFactsController < UIViewController
     map.zoom_enabled = true
     map.scroll_enabled = true
 
-    all_regions.each do |region|
+    @all_regions.each do |region|
       place = MKPointAnnotation.new
       place.coordinate = region.center
       place.title = region.identifier
