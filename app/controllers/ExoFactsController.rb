@@ -3,11 +3,16 @@ class ExoFactsController < UIViewController
 
   def viewDidLoad
     super
+    # @planet = UIImage.imageNamed('planet@2x.png')
+    # self.tabBarItem = UITabBarItem.alloc.initWithTitle("Exo Systems", image:@planet, tag:1)
+    view.styleId = 'ExoView'
+    self.title = "Discover"
+    
     @defaults = NSUserDefaults.standardUserDefaults
     @defaults["user_location"] = nil
     # check_location
     @add_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    @add_button.setTitle("Add", forState:UIControlStateNormal)
+    @add_button.setTitle("Coordinates", forState:UIControlStateNormal)
     @add_button.sizeToFit
     @add_button.frame = CGRect.new([10, 50], @add_button.frame.size)
     @add_button.addTarget(self, action:"display_lat_long", forControlEvents:UIControlEventTouchUpInside)
@@ -79,32 +84,42 @@ class ExoFactsController < UIViewController
           end
 
           if @regionStateArray.first != nil
+            
             @all_regions.each_with_index do |location, index|
               puts location.identifier
               if location.containsCoordinate(@user_coords)
                 puts "Contains: #{location.identifier}, #{index}"
-                # general_alert("#{location.identifier} contains your coords")
                 location_id = index + 1
 
                 # @defaults = NSUserDefaults.standardUserDefaults
                 @defaults["user_location"] = location_id
 
-                self.view.backgroundColor = UIColor.whiteColor
-                # systems_controller = SystemsController.alloc.initWithParams({location_id: location_id})
+              
                 System.pull_system_data(location_id) do |system|
-                  self.title = system[:name]
+
+                  @planetTitle = UILabel.alloc.initWithFrame(CGRectZero)
+                  @planetTitle.styleClass = 'h1'
+                  @planetTitle.text = system[:name]
+                  @planetTitle.sizeToFit
+                  @planetTitle.center = CGPointMake(self.view.frame.size.width / 2, 90)
+                  self.view.addSubview(@planetTitle)
 
                   frame = UIScreen.mainScreen.applicationFrame
                   origin = frame.origin
                   size = frame.size
-                  body = UITextView.alloc.initWithFrame([[origin.x, origin.y + 20], [size.width, size.height]])
+                  body = UITextView.alloc.initWithFrame([[origin.x, origin.y + 100], [size.width, size.height]])
+                  body.styleClass = 'PlanetText'
                   body.text = system[:description]
+                  body.backgroundColor = UIColor.clearColor
                   body.editable = false
-                  scroll_view = UIScrollView.alloc.initWithFrame(frame)
+                  # body.sizeToFit
 
+                  # body.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2)-25)
+                  scroll_view = UIScrollView.alloc.initWithFrame(frame)
                   scroll_view.showsVerticalScrollIndicator = true
                   scroll_view.scrollEnabled = true
                   scroll_view.addSubview(body)
+                  scroll_view.backgroundColor = UIColor.clearColor
                   scroll_view.contentSize = body.frame.size
                   self.view.addSubview(scroll_view)
                 end
@@ -119,7 +134,11 @@ class ExoFactsController < UIViewController
             # systems_controller = SystemsController.alloc.initWithParams({location_id: location_id})
             # self.view.addSubview(systems_controller)
           elsif @regionStateArray.first == nil
+            @black_bar = UIView.alloc.initWithFrame(CGRectMake(0, 0, self.view.frame.size.width, 20))
+            @black_bar.backgroundColor = UIColor.blackColor
+            self.view.addSubview(@black_bar)
             createMap(@all_regions)
+            self.view.bringSubviewToFront(@black_bar)
           end
 
           NSLog("Enabling region monitoring.")
@@ -130,11 +149,11 @@ class ExoFactsController < UIViewController
         @location_manager = CLLocationManager.alloc.init
         @location_manager.startUpdatingLocation
         NSLog("Location services for this app not enabled")
-        self.view.backgroundColor = UIColor.whiteColor
+        # self.view.backgroundColor = UIColor.whiteColor
         general_alert("Location services not enabled.")
       end
     else
-      self.view.backgroundColor = UIColor.whiteColor
+      # self.view.backgroundColor = UIColor.whiteColor
       general_alert("Location services not enabled.")
       NSLog("Location services not enabled. FIX IT IN SETTINGS!")
     end
@@ -144,7 +163,11 @@ class ExoFactsController < UIViewController
 
   def initWithNibName(name, bundle: bundle)
     super
-    self.tabBarItem = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemFeatured, tag: 1)
+    @planet = UIImage.imageNamed('planet.png')
+    @planetSel = UIImage.imageNamed('planet-select.png')
+    # @planet = UIImage.imageNamed('planet.png')
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle('Discover', image: @planet, tag: 1)
+    self.tabBarItem.setFinishedSelectedImage(@planetSel, withFinishedUnselectedImage:@planet)
     self
   end
 

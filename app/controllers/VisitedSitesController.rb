@@ -1,8 +1,9 @@
 class VisitedSitesController < UITableViewController
   def viewDidLoad
     super
-    self.view.backgroundColor = UIColor.whiteColor
-    self.title = "Visits"
+    view.styleId = 'VisitedView'
+    # self.view.backgroundColor = UIColor.whiteColor
+    self.title = "Explored"
   end
 
   def initWithNibName(name, bundle: bundle)
@@ -14,7 +15,10 @@ class VisitedSitesController < UITableViewController
       @visits = visits
     end
 
-    self.tabBarItem = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemHistory, tag: 3)
+    @rocket = UIImage.imageNamed('rocket.png')
+    @rocketSel = UIImage.imageNamed('rocket-select.png')
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle('Explored', image: @rocket, tag: 3)
+    self.tabBarItem.setFinishedSelectedImage(@rocketSel, withFinishedUnselectedImage:@rocket)
     self
   end
 
@@ -25,6 +29,7 @@ class VisitedSitesController < UITableViewController
       cell = UITableViewCell.alloc.initWithStyle(
         UITableViewCellStyleDefault,
         reuseIdentifier:@reuseIdentifier)
+    cell.backgroundColor = UIColor.clearColor
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
 

@@ -1,12 +1,12 @@
 class GeoCachingController < UIViewController
   def viewDidLoad
     super
+    view.styleId = 'GeoCacheView'
+
     @defaults = NSUserDefaults.standardUserDefaults
     frame = UIScreen.mainScreen.applicationFrame
     origin = frame.origin
     size = frame.size
-
-    self.view.backgroundColor = UIColor.whiteColor
 
     if @defaults['user_location'] != nil
       self.title = "Geo Cache"
@@ -43,14 +43,20 @@ class GeoCachingController < UIViewController
       self.title = "Out of Range"
       @label.text = 'Too far away from any systems'
       @label.sizeToFit
-      @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
+
+      @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)      
+      @label.styleClass = 'message'
+
       self.view.addSubview(@label)
     end
   end
 
   def initWithNibName(name, bundle: bundle)
     super
-    self.tabBarItem = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemDownloads, tag: 2)
+    @write = UIImage.imageNamed('write.png')
+    @writeSel = UIImage.imageNamed('write-select.png')
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle('Geo Cache', image: @write, tag: 2)
+    self.tabBarItem.setFinishedSelectedImage(@writeSel, withFinishedUnselectedImage:@write)
     self
   end
 
