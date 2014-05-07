@@ -3,8 +3,10 @@ class ExoFactsController < UIViewController
 
   def viewDidLoad
     super
+    # @planet = UIImage.imageNamed('planet@2x.png')
+    # self.tabBarItem = UITabBarItem.alloc.initWithTitle("Exo Systems", image:@planet, tag:1)
     view.styleId = 'ExoView'
-    self.title = "Hello"
+    self.title = "Discover"
     
     @defaults = NSUserDefaults.standardUserDefaults
     @defaults["user_location"] = nil
@@ -161,7 +163,11 @@ class ExoFactsController < UIViewController
 
   def initWithNibName(name, bundle: bundle)
     super
-    self.tabBarItem = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemFeatured, tag: 1)
+    @planet = UIImage.imageNamed('planet.png')
+    @planetSel = UIImage.imageNamed('planet-select.png')
+    # @planet = UIImage.imageNamed('planet.png')
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle('Discover', image: @planet, tag: 1)
+    self.tabBarItem.setFinishedSelectedImage(@planetSel, withFinishedUnselectedImage:@planet)
     self
   end
 
