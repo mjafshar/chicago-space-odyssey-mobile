@@ -53,7 +53,10 @@ class GeoCachingController < UIViewController
 
   def initWithNibName(name, bundle: bundle)
     super
-    self.tabBarItem = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemDownloads, tag: 2)
+    @write = UIImage.imageNamed('write.png')
+    @writeSel = UIImage.imageNamed('write-select.png')
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle('Geo Cache', image: @write, tag: 2)
+    self.tabBarItem.setFinishedSelectedImage(@writeSel, withFinishedUnselectedImage:@write)
     self
   end
 
