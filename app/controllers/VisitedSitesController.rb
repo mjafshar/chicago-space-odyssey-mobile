@@ -26,6 +26,7 @@ class VisitedSitesController < UITableViewController
       cell = UITableViewCell.alloc.initWithStyle(
         UITableViewCellStyleDefault,
         reuseIdentifier:@reuseIdentifier)
+    cell.backgroundColor = UIColor.clearColor
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
 

@@ -1,6 +1,5 @@
 #ExoView {
 	background-image: url(bg.png);
-	/*background-color: red;*/
 	color: white;
 	
 }
@@ -18,16 +17,11 @@ title {
 }
 
 text-view {
-	/*background-color: none;*/
 	opacity: .8;
 }
 
 tab-bar {
 	background-color: black;
-	color: white;
-}
-
-table-view-cell {
 	color: white;
 }
 
@@ -41,7 +35,6 @@ text-label {
 	font-weight: 400;
 	font-size: 16px;
 	color: white;
-	/*font-size: 14px;*/
 }
 
 .h1 {
@@ -49,7 +42,6 @@ text-label {
   height: 34;
   font-family: 'Avenir Next';
   font-weight: 300;
-  /*position: 75px;*/
   color: white;
   text-transform: uppercase;
 }
@@ -64,12 +56,10 @@ text-label {
 #AdlerView {
 	background-image: url(bg.png);
 	color: white;
-	/*background-color: linear-gradient(#000000, #f2f4f6);*/
 }
 #GeoCacheView {
 	background-image: url(bg.png);
 	color: white;
-	/*background-color: linear-gradient(#000000, #f2f4f6);*/
 }
 
 #GeoCacheView button {
@@ -97,12 +87,11 @@ bar-button-item {
 }
 
 #SystemsView {
-	background-image: url(bg.png);
+	/*background-image: url(bg.png);*/
+	background-color: black;
 	color: white;
-	/*background-color: linear-gradient(#000000, #f2f4f6);*/
 }
 #VisitedView {
-	/*background-image: url(bg.png);*/
 	color: white;
 	background-color: black;
 }
