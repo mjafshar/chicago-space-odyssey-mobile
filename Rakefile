@@ -20,4 +20,5 @@ Motion::Project::App.setup do |app|
   app.pixatefreestyle.framework = 'vendor/PixateFreestyle.framework'
   app.info_plist['UIViewControllerBasedStatusBarAppearance'] = false
   app.interface_orientations = [:portrait]
+  app.icons = ["logo.png", "logo@2x.png"]
 end
