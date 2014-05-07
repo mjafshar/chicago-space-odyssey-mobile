@@ -27,6 +27,7 @@ class AppDelegate
           # @window.backgroundColor = UIColor.whiteColor
           label.text = "Please allow access to Twitter in settings"
           label.sizeToFit
+          label.styleClass = 'message'
           label.center = CGPointMake(@window.frame.size.width / 2, @window.frame.size.height / 2)
           @window.addSubview(label)
         end
@@ -36,6 +37,7 @@ class AppDelegate
       # @window.backgroundColor = UIColor.whiteColor
       label.text = "Login to Twitter in your settings!"
       label.sizeToFit
+      label.styleClass = 'message'
       label.center = CGPointMake(@window.frame.size.width / 2, @window.frame.size.height / 2)
       @window.addSubview(label)
     end
