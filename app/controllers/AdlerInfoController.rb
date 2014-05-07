@@ -14,9 +14,11 @@ class AdlerInfoController < UIViewController
 
   def initWithNibName(name, bundle: bundle)
     super
-    @adler = UIImage.imageNamed('planet')
-    self.tabBarItem = UITabBarItem.alloc.
-    initWithTitle('ADLER', image: @adler, tag: 4)
+    @adler = UIImage.imageNamed('tele.png')
+    @adlerSel = UIImage.imageNamed('tele-select.png')
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle('Adler', image: @adler, tag: 4)
+    self.tabBarItem.setFinishedSelectedImage(@adlerSel, withFinishedUnselectedImage:@adler)
+    # self.tabBarItem.title.styleClass = 'tab-text'
     self
   end
 end
