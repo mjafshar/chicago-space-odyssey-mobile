@@ -67,8 +67,8 @@ class GeoCachingController < UIViewController
   def cancel_message_composer
     hide_message_composer
     @image_view = nil
+    @composer_text_view.text = ''
     self.view.addSubview(@compose_btn)
-    # @composer_text_view.text = 'Type something'
   end
 
   def take_picture
