@@ -44,7 +44,7 @@ class GeoCachingController < UIViewController
       @label.text = 'Too far away from any systems'
       @label.sizeToFit
 
-      @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)      
+      @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
       @label.styleClass = 'message'
 
       self.view.addSubview(@label)
@@ -104,6 +104,12 @@ class GeoCachingController < UIViewController
   def send_messege(payload)
     # Have sending process in background, when phone is turned off or app is in background
     BW::HTTP.post("http://tosche-station.herokuapp.com/collections/create", {payload: payload}) do |response|
+      if response
+        alert = UIAlertView.new
+        alert.addButtonWithTitle("OK")
+        alert.message = "Message posted!"
+        alert.show
+      end
     end
   end
 end
