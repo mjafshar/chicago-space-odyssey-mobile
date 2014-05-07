@@ -65,7 +65,7 @@ class ExoFactsController < UIViewController
         @location_manager = CLLocationManager.alloc.init
         @location_manager.startUpdatingLocation
         NSLog("Location services for this app not enabled")
-        general_alert("Location services not enabled.")
+        general_alert("Location services must be allowed for this application.")
       end
     else
       general_alert("Location services not enabled.")
