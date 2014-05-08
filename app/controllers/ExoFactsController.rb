@@ -50,8 +50,8 @@ class ExoFactsController < UIViewController
                 @view_map_button = UIBarButtonItem.alloc.initWithTitle("Map", style: UIBarButtonItemStyleBordered, target:self, action:'createMap')
                 self.navigationItem.rightBarButtonItem = @view_map_button
 
-                @exo_facts_button = UIBarButtonItem.alloc.initWithTitle("Facts", style: UIBarButtonItemStyleBordered, target:self, action:'back_to_facts')
-                self.navigationItem.leftBarButtonItem = @exo_facts_button
+                @exo_back_button = UIBarButtonItem.alloc.initWithTitle("Facts", style: UIBarButtonItemStyleBordered, target:self, action:'back_to_facts')
+                self.navigationItem.leftBarButtonItem = nil
               end
             end
 
@@ -71,7 +71,7 @@ class ExoFactsController < UIViewController
             self.navigationItem.rightBarButtonItem = @view_map_button
 
             @exo_facts_button = UIBarButtonItem.alloc.initWithTitle("System", style: UIBarButtonItemStyleBordered, target:self, action:'back_to_closest_region_view')
-            self.navigationItem.leftBarButtonItem = @exo_facts_button
+            self.navigationItem.leftBarButtonItem = nil
 
 
             self.view.bringSubviewToFront(@black_bar)
@@ -174,7 +174,7 @@ class ExoFactsController < UIViewController
       @close_to_region_label.text = "You're close!"
       @close_to_region_label.sizeToFit
       @close_to_region_label.center = CGPointMake(self.view.frame.size.width / 2, 90)
-      self.view.addSubview(@close_to_region_label)  
+      self.view.addSubview(@close_to_region_label)
 
       frame = UIScreen.mainScreen.applicationFrame
       origin = frame.origin
@@ -192,16 +192,20 @@ class ExoFactsController < UIViewController
       scroll_view.backgroundColor = UIColor.clearColor
       scroll_view.contentSize = body.frame.size
       self.view.addSubview(scroll_view)
-    end     
+    end
   end
 
   def back_to_closest_region_view
     @map.removeFromSuperview()
+    self.navigationItem.leftBarButtonItem = nil
+    self.navigationItem.rightBarButtonItem = @view_map_button
     closest_region_view
   end
 
   def back_to_facts
     @map.removeFromSuperview()
+    self.navigationItem.leftBarButtonItem = nil
+    self.navigationItem.rightBarButtonItem = @view_map_button
     populate_view_with_data
   end
 
@@ -220,7 +224,8 @@ class ExoFactsController < UIViewController
       place.title = region.identifier
       @map.addAnnotation(place)
     end
-
+    self.navigationItem.leftBarButtonItem = @exo_back_button
+    self.navigationItem.rightBarButtonItem = nil
     view.addSubview(@map)
   end
 
