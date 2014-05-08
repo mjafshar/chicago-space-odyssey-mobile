@@ -60,6 +60,7 @@ class ExoFactsController < UIViewController
             @black_bar.backgroundColor = UIColor.blackColor
             self.view.addSubview(@black_bar)
             createMap
+
             self.view.bringSubviewToFront(@black_bar)
           end
 
@@ -174,6 +175,19 @@ class ExoFactsController < UIViewController
     end
 
     view.addSubview(@map)
+  end
+
+  def find_closest_region
+    distance_to_system = []
+    @all_regions.each_with_index do |region, index|
+      distance_to_system << calculateDistance(region.center, @user_coords)
+    end
+
+    closest_system_distance = distance_to_system.min
+    closest_system_index = distance_to_system.index(closest_system_distance)
+    closest_region = @all_regions[closest_system_index]
+
+    {closest_region => closest_system_distance}
   end
 
   def locationManager(manager, didUpdateLocations:locations)
