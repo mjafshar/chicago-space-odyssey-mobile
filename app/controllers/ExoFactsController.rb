@@ -63,6 +63,7 @@ class ExoFactsController < UIViewController
             closest_system_and_distance = find_closest_region
             @closest_system_index = closest_system_and_distance.keys.first
             @closest_region_distance = closest_system_and_distance[@closest_system_index]
+            @closest_region_name = closest_system_and_distance[:location_name]
 
             closest_region_view
 
@@ -180,7 +181,7 @@ class ExoFactsController < UIViewController
       size = frame.size
       body = UITextView.alloc.initWithFrame([[origin.x, origin.y + 100], [size.width, size.height]])
       body.styleClass = 'PlanetText'
-      body.text = "You are #{@closest_region_distance}km from #{system[:name]}. Click on the map to find out where it is!"
+      body.text = "You are #{@closest_region_distance.round(2)} mi from #{system[:name]} at #{@closest_region_name}. Click on the map to find out where it is!"
       body.backgroundColor = UIColor.clearColor
       body.editable = false
 
@@ -229,11 +230,12 @@ class ExoFactsController < UIViewController
       distance_to_system << calculateDistance(region.center, @user_coords)
     end
 
-    closest_system_distance = distance_to_system.min
-    closest_system_index = distance_to_system.index(closest_system_distance)
+    system_distance = distance_to_system.min
+    closest_system_index = distance_to_system.index(system_distance)
     closest_region = @all_regions[closest_system_index]
+    closest_system_distance = system_distance / 1609.344
 
-    {closest_system_index => closest_system_distance}
+    {closest_system_index => closest_system_distance, location_name: closest_region.identifier}
   end
 
   def locationManager(manager, didUpdateLocations:locations)
