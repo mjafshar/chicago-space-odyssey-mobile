@@ -208,7 +208,7 @@ class ExoFactsController < UIViewController
     @map = MapView.new
     @map.frame = self.view.frame
     @map.delegate = self
-    @map.region = CoordinateRegion.new([41.8337329, -87.7321555], [1, 1])
+    @map.region = CoordinateRegion.new([41.889911, -87.637657], [0.2, 0.2])
     @map.shows_user_location = true
     @map.zoom_enabled = true
     @map.scroll_enabled = true
