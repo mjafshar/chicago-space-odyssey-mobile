@@ -47,7 +47,7 @@ class ExoFactsController < UIViewController
 
                 populate_view_with_data
 
-                @view_map_button = UIBarButtonItem.alloc.initWithTitle("View Map", style: UIBarButtonItemStyleBordered, target:self, action:'createMap')
+                @view_map_button = UIBarButtonItem.alloc.initWithTitle("Map", style: UIBarButtonItemStyleBordered, target:self, action:'createMap')
                 self.navigationItem.rightBarButtonItem = @view_map_button
 
                 @exo_facts_button = UIBarButtonItem.alloc.initWithTitle("Facts", style: UIBarButtonItemStyleBordered, target:self, action:'back_to_facts')
@@ -59,7 +59,19 @@ class ExoFactsController < UIViewController
             @black_bar = UIView.alloc.initWithFrame(CGRectMake(0, 0, self.view.frame.size.width, 20))
             @black_bar.backgroundColor = UIColor.blackColor
             self.view.addSubview(@black_bar)
-            createMap
+
+            closest_system_and_distance = find_closest_region
+            @closest_system_index = closest_system_and_distance.keys.first
+            @closest_region_distance = closest_system_and_distance[@closest_system_index]
+
+            closest_region_view
+
+            @view_map_button = UIBarButtonItem.alloc.initWithTitle("Map", style: UIBarButtonItemStyleBordered, target:self, action:'createMap')
+            self.navigationItem.rightBarButtonItem = @view_map_button
+
+            @exo_facts_button = UIBarButtonItem.alloc.initWithTitle("System", style: UIBarButtonItemStyleBordered, target:self, action:'back_to_closest_region_view')
+            self.navigationItem.leftBarButtonItem = @exo_facts_button
+
 
             self.view.bringSubviewToFront(@black_bar)
           end
@@ -153,6 +165,40 @@ class ExoFactsController < UIViewController
     end
   end
 
+  def closest_region_view
+    System.pull_system_data(@closest_system_index) do |system|
+
+      @close_to_region_label = UILabel.alloc.initWithFrame(CGRectZero)
+      @close_to_region_label.styleClass = 'h1'
+      @close_to_region_label.text = "You're close!"
+      @close_to_region_label.sizeToFit
+      @close_to_region_label.center = CGPointMake(self.view.frame.size.width / 2, 90)
+      self.view.addSubview(@close_to_region_label)  
+
+      frame = UIScreen.mainScreen.applicationFrame
+      origin = frame.origin
+      size = frame.size
+      body = UITextView.alloc.initWithFrame([[origin.x, origin.y + 100], [size.width, size.height]])
+      body.styleClass = 'PlanetText'
+      body.text = "You are #{@closest_region_distance}km from #{system[:name]}. Click on the map to find out where it is!"
+      body.backgroundColor = UIColor.clearColor
+      body.editable = false
+
+      scroll_view = UIScrollView.alloc.initWithFrame(frame)
+      scroll_view.showsVerticalScrollIndicator = true
+      scroll_view.scrollEnabled = true
+      scroll_view.addSubview(body)
+      scroll_view.backgroundColor = UIColor.clearColor
+      scroll_view.contentSize = body.frame.size
+      self.view.addSubview(scroll_view)
+    end     
+  end
+
+  def back_to_closest_region_view
+    @map.removeFromSuperview()
+    closest_region_view
+  end
+
   def back_to_facts
     @map.removeFromSuperview()
     populate_view_with_data
@@ -187,7 +233,7 @@ class ExoFactsController < UIViewController
     closest_system_index = distance_to_system.index(closest_system_distance)
     closest_region = @all_regions[closest_system_index]
 
-    {closest_region => closest_system_distance}
+    {closest_system_index => closest_system_distance}
   end
 
   def locationManager(manager, didUpdateLocations:locations)
