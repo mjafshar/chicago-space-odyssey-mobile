@@ -8,7 +8,7 @@ class GeoCachingController < UIViewController
     origin = frame.origin
     size = frame.size
 
-    if @defaults['user_location'] != nil
+    # if @defaults['user_location'] != nil
 
       @data = {image: nil, text: nil, user_id: @defaults['twitter_id'], location_id: @defaults['user_location']}
 
@@ -52,6 +52,7 @@ class GeoCachingController < UIViewController
       @composer_text_view.inputAccessoryView = keyboard_toolbar
       @composer_text_view.scrollEnabled = true
       @composer_text_view.setFont(UIFont.fontWithName('Avenir Next', size:18))
+      @composer_text_view.styleId = 'composer'
 
       spacer = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil)
       cancel_btn = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemCancel, target:self, action:'cancel_message_composer')
@@ -63,17 +64,17 @@ class GeoCachingController < UIViewController
 
       keyboard_toolbar.addSubview(toolbar)
 
-    else
-      @label = UILabel.alloc.initWithFrame(CGRectZero)
+    # else
+    #   @label = UILabel.alloc.initWithFrame(CGRectZero)
 
-      @label.text = 'Too far away from any systems'
-      @label.sizeToFit
+    #   @label.text = 'Too far away from any systems'
+    #   @label.sizeToFit
 
-      @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
-      @label.styleClass = 'message'
+    #   @label.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2)
+    #   @label.styleClass = 'message'
 
-      self.view.addSubview(@label)
-    end
+    #   self.view.addSubview(@label)
+    # end
   end
 
   def initWithNibName(name, bundle: bundle)
