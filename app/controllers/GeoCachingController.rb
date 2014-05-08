@@ -52,6 +52,7 @@ class GeoCachingController < UIViewController
       @composer_text_view.inputAccessoryView = keyboard_toolbar
       @composer_text_view.scrollEnabled = true
       @composer_text_view.setFont(UIFont.fontWithName('Avenir Next', size:18))
+      @composer_text_view.styleId = 'composer'
 
       spacer = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil)
       cancel_btn = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemCancel, target:self, action:'cancel_message_composer')
