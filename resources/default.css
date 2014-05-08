@@ -56,11 +56,27 @@ text-label {
 	font-size: 16px;
 }
 
-
 #AdlerView {
 	background-image: url(bg.png);
 	color: white;
 }
+
+#AdlerView button {
+	background-color: black;
+	color: white;
+	opacity: .5;
+	width: 280px;
+	height: 60px;
+}
+
+#AdlerBody {
+	font-family: 'Avenir Next';
+	font-weight: 400;
+	font-size: 16px;
+	opacity: .5;
+	color: white;
+}
+
 #GeoCacheView {
 	background-image: url(bg.png);
 	color: white;
